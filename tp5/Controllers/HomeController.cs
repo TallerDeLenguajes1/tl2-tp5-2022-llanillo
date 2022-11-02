@@ -1,6 +1,4 @@
 ﻿using System.Diagnostics;
-using Microsoft.AspNetCore.Mvc;
-using tp5.Models;
 
 namespace tp5.Controllers;
 

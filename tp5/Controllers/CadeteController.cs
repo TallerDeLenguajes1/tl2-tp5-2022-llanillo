@@ -1,44 +1,51 @@
-using Microsoft.AspNetCore.Mvc;
-using tp5.Models;
 namespace tp5.Controllers;
 
 public class CadeteController : Controller
 {
+    private const string CadetesArchivoPath = "C:\\Taller\\Cadeteria.csv";
+    
     private readonly ILogger<CadeteController> _logger;
-
-    private static readonly List<Cadete> Cadetes = new();
+    private readonly IMapper _mapper;
+    
     private static int _id;
 
-
-    public CadeteController(ILogger<CadeteController> logger)
+    public CadeteController(ILogger<CadeteController> logger, IMapper mapper)
     {
         _logger = logger;
+        _mapper = mapper;
     }
 
     public IActionResult Index()
     {
-        return View(Cadetes);
+        var cadetes = LeerCsvCadetes(CadetesArchivoPath);
+        var cadetesViewModel = _mapper.Map<List<CadeteViewModel>>(cadetes);
+        _id = cadetes.Count;
+        return View(cadetesViewModel);
     }
 
     [HttpGet]
     public IActionResult AltaCadete()
     {
-        return View();
+        return View("AltaCadete");
     }
 
     [HttpPost]
-    public void AltaCadeteExito(Cadete cadete)
+    public IActionResult AltaCadete(Cadete cadete)
     {
-        cadete.Id = ++_id;
-        Cadetes.Add(cadete);
+        cadete.Id = _id++;
+        AgregarCadeteCsv(CadetesArchivoPath, cadete);
         // return View("Index", _cadetes);
-        Response.Redirect("/Cadete");
+        // Response.Redirect("/Cadete");
+        return RedirectToAction("Index");
     }
 
     [HttpGet]
-    public void BajaCadete(int id)
+    public IActionResult BajaCadete(int id)
     {
-        Cadetes.RemoveAll(x => x.Id == id);
-        Response.Redirect("/Cadete");
+        var cadetes = LeerCsvCadetes(CadetesArchivoPath);
+        cadetes.RemoveAll(x => x.Id == id);
+        EliminarCsv(CadetesArchivoPath);
+        CrearCadetesCsv(CadetesArchivoPath, cadetes);
+        return RedirectToAction("Index");
     }
 }

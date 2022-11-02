@@ -1,7 +1,14 @@
+global using static tp5.Util.CsvHelper;
+global using tp5.ViewModels.Cadete;
+global using tp5.Models;
+global using Microsoft.AspNetCore.Mvc;
+global using AutoMapper;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddAutoMapper(typeof(Program));
 
 var app = builder.Build();
 

@@ -1,32 +1,39 @@
-﻿@model List<Cadete>
+﻿@model List<CadeteViewModel>
 
 <h2>Lista de Cadetes</h2>
 
 <a class="btn btn-primary btn-sm" href='/Cadete/AltaCadete'>Crear nuevo Cadete</a>
 
-<table class="table">
-    <thead>
-    <tr>
-        <th>Id</th>
-        <th>Nombre</th>
-        <th>Dirección</th>
-        <th>Teléfono</th>
-    </tr>
-    </thead>
+<section>
+    <article>
 
-    <tbody>
-    @foreach (var cadete in Model)
-    {
-        <tr>
-            <td>@cadete.Id</td>
-            <td>@cadete.Nombre</td>
-            <td>@cadete.Direccion</td>
-            <td>@cadete.Telefono</td>
-            <td>
-                <a class="btn btn-primary btn-sm" href="/Cadete/AltaCadete?id=@cadete.Id">Editar</a>
-                <a class="btn btn-danger btn-sm" href="/Cadete/BajaCadete?id=@cadete.Id">Eliminar</a>
-            </td>
-        </tr>
-    }
-    </tbody>
-</table>
+        <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th>Dirección</th>
+                <th>Teléfono</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            @foreach (var cadete in Model)
+            {
+                <tr>
+                    <td>@cadete.Id</td>
+                    <td>@cadete.Nombre</td>
+                    <td>@cadete.Direccion</td>
+                    <td>@cadete.Telefono</td>
+                    <td>
+                        <a class="btn btn-primary btn-sm" href="/Cadete/AltaCadete?id=@cadete.Id">Editar</a>
+                        <a class="btn btn-danger btn-sm" href="/Cadete/BajaCadete?id=@cadete.Id">Eliminar</a>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+        
+    </article>
+</section>
