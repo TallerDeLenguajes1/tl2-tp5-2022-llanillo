@@ -1,0 +1,49 @@
+﻿@model CadeteViewModel
+
+@{
+    ViewBag.Title = "Modificar Cadete";
+    Layout = "_Layout";
+}
+
+<body>
+<header>
+    <main>
+        <h2>@ViewBag.Title</h2>
+        <form asp-controller="Cadete" asp-action="ModificarCadete" method="post">
+
+            <input type="hidden" name="Id" value="@Model.Id"/>
+
+            <div class="row mb-3">
+                <label class="col-sm-3 col-form-label" for="nombre">Nombre: </label>
+                <div class="col-sm-6">
+                    <input class="form-control" type="text" id="nombre" name="Nombre" value="@Model.Nombre">
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-sm-3 col-form-label" for="direccion">Dirección:</label>
+                <div class="col-sm-6">
+                    <input class="form-control" type="text" id="direccion" name="Direccion" value="@Model.Direccion">
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-sm-3 col-form-label" for="telefono">Teléfono</label>
+                <div class="col-sm-6">
+                    <input class="form-control" type="tel" id="telefono" name="Telefono" value="@Model.Telefono">
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="offset-sm-3 col-sm-3 d-grid">
+                    <input class="btn btn-primary" type="submit" value="Modificar">
+                </div>
+                <div class="col-sm-3 d-grid">
+                    <input class="btn btn-primary" type="reset" value="Borar">
+                </div>
+            </div>
+
+        </form>
+    </main>
+</header>
+</body>

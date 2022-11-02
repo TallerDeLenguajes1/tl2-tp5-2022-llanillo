@@ -14,13 +14,13 @@ public static class CsvHelper
         return pathProyecto?.Parent != null ? pathProyecto.Parent.FullName : string.Empty;
     }
 
-    public static List<Cadete> LeerCsvCadetes(string path)
+    public static List<Cadete> LeerArchivoCadete(string path)
     {
         if (!ExisteArchivo(path)) return new List<Cadete>();
 
         try
         {
-            var cadetes = new List<Cadete>();
+            var salida = new List<Cadete>();
             var textoCsv = File.ReadLines(path).ToList();
             // textoCsv.RemoveAt(0); // Removemos la cabecera del excel
 
@@ -28,15 +28,15 @@ public static class CsvHelper
             {
                 var cadete = new Cadete
                 {
-                    Id = Convert.ToInt32(lineaSeparada[0]),
+                Id = Convert.ToInt32(lineaSeparada[0]),
                     Nombre = lineaSeparada[1],
                     Direccion = lineaSeparada[2],
                     Telefono = Convert.ToInt32(lineaSeparada[3])
                 };
-                cadetes.Add(cadete);
+                salida.Add(cadete);
             }
 
-            return cadetes;
+            return salida;
         }
         catch (Exception e)
         {
@@ -45,15 +45,23 @@ public static class CsvHelper
         }
     }
 
-    public static void CrearCadetesCsv(string path, List<Cadete> cadete)
+    public static void CrearArchivo<T>(string path, IEnumerable<T> entidades)
     {
         try
         {
             using var streamWriter = File.AppendText(path);
 
-            cadete.ForEach(x =>
-                streamWriter.WriteLine(string.Format(x.Id + SeparadorCsv + x.Nombre + SeparadorCsv + x.Direccion +
-                                                     SeparadorCsv + x.Telefono)));
+            foreach (var contenido in from entidad in entidades
+                     select entidad?.ToString()?.Split(" ")
+                     into arregloEntidad
+                     where arregloEntidad != null
+                     select string.Join(SeparadorCsv, arregloEntidad))
+            {
+                streamWriter.WriteLine(contenido);
+            }
+
+            // streamWriter.WriteLine(string.Format(x.Id + SeparadorCsv + x.Nombre + SeparadorCsv + x.Direccion +
+            // SeparadorCsv + x.Telefono)));
             streamWriter.Close();
         }
         catch (Exception e)
@@ -64,25 +72,29 @@ public static class CsvHelper
         Logger.Debug("Se escribió correctamente en el archivo: {Path}", path);
     }
 
-    public static void AgregarCadeteCsv(string path, Cadete cadete)
+    public static void AgregarEntidad<T>(string path, T entidad)
     {
         if (!ExisteArchivo(path))
         {
-            CrearCadetesCsv(path, new List<Cadete> { cadete });
+            CrearArchivo(path, new List<T> { entidad });
         }
         else
         {
             using var fileStream = new FileStream(path, FileMode.Append);
             using var streamWriter = new StreamWriter(fileStream);
 
-            var contenido = string.Format(cadete.Id + SeparadorCsv + cadete.Nombre + SeparadorCsv + cadete.Direccion +
-                                          SeparadorCsv + cadete.Telefono);
-            streamWriter.WriteLine(contenido);
+            var arregloEntidad = entidad?.ToString()?.Split(" ");
+            if (arregloEntidad != null)
+            {
+                var contenido = string.Join(SeparadorCsv, arregloEntidad);
+                streamWriter.WriteLine(contenido);
+            }
+
             streamWriter.Close();
         }
     }
 
-    public static void EliminarCsv(string path)
+    public static void EliminarArchivo(string path)
     {
         if (!File.Exists(path)) return;
         File.Delete(path);
