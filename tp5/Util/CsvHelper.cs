@@ -28,12 +28,37 @@ public static class CsvHelper
             {
                 var cadete = new Cadete
                 {
-                Id = Convert.ToInt32(lineaSeparada[0]),
+                    Id = Convert.ToInt32(lineaSeparada[0]),
                     Nombre = lineaSeparada[1],
                     Direccion = lineaSeparada[2],
                     Telefono = Convert.ToInt32(lineaSeparada[3])
                 };
                 salida.Add(cadete);
+            }
+
+            return salida;
+        }
+        catch (Exception e)
+        {
+            Logger.Error(e, "Error al leer el {Path} CSV ", path);
+            throw;
+        }
+    }
+
+    public static List<Pedido> LeerArchivoPedido(string path)
+    {
+        if (!ExisteArchivo(path)) return new List<Pedido>();
+
+        try
+        {
+            var salida = new List<Pedido>();
+            var textoCsv = File.ReadLines(path).ToList();
+            // textoCsv.RemoveAt(0); // Removemos la cabecera del excel
+
+            foreach (var lineaSeparada in textoCsv.Select(linea => linea.Split(SeparadorCsv)))
+            {
+                var pedido = new Pedido(Convert.ToInt32(lineaSeparada[0]), lineaSeparada[1], lineaSeparada[2]);
+                salida.Add(pedido);
             }
 
             return salida;

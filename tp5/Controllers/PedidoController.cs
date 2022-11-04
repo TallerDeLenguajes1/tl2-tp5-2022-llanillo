@@ -18,19 +18,16 @@ public class PedidoController : Controller
     [HttpGet]
     public IActionResult Index()
     {
-        // var cadetes = LeerCsvCadetes(CadetesArchivoPath);
-        // var cadetesViewModel = _mapper.Map<List<CadeteViewModel>>(cadetes);
-        // _id = cadetes.Count;
-        return View("Index");
+        var pedidos = LeerArchivoPedido(PedidosArchivoPath);
+        var pedidosViewModel = _mapper.Map<List<PedidoViewModel>>(pedidos);
+        _id = pedidos.Count;
+        return View(pedidosViewModel);
     }
 
     [HttpGet]
     public IActionResult AltaPedido()
     {
-        var pedidos = LeerArchivoCadete(PedidosArchivoPath);
-        var pedidosViewModel = _mapper.Map<List<PedidoViewModel>>(pedidos);
-        _id = pedidos.Count;
-        return View(pedidosViewModel);
+        return View("AltaPedido");
     }
 
     [HttpPost]
@@ -44,12 +41,32 @@ public class PedidoController : Controller
     }
 
     [HttpGet]
+    public IActionResult ModificarPedido(int id)
+    {
+        var pedidos = LeerArchivoPedido(PedidosArchivoPath);
+        var pedidoBuscado = pedidos.Find(x => x.Id == id);
+        var pedidoViewModel = _mapper.Map<PedidoViewModel>(pedidoBuscado);
+        return View(pedidoViewModel);
+    }
+
+    [HttpPost]
+    public IActionResult ModificarPedido(Pedido pedido)
+    {
+        Console.WriteLine(pedido.Id);
+        var pedidos = LeerArchivoPedido(PedidosArchivoPath);
+        var indicePedido = pedidos.FindIndex(x => x.Id == pedido.Id);
+        pedidos[indicePedido] = pedido;
+        EliminarArchivo(PedidosArchivoPath);
+        CrearArchivo(PedidosArchivoPath, pedidos);
+        return RedirectToAction("Index");
+    }
+    [HttpGet]
     public IActionResult BajaPedido(int id)
     {
-        // var cadetes = LeerCsvCadetes(CadetesArchivoPath);
-        // cadetes.RemoveAll(x => x.Id == id);
-        // EliminarCsv(CadetesArchivoPath);
-        // CrearArchivo(CadetesArchivoPath, cadetes);
+        var pedidos = LeerArchivoPedido(PedidosArchivoPath);
+        pedidos.RemoveAll(x => x.Id == id);
+        EliminarArchivo(PedidosArchivoPath);
+        CrearArchivo(PedidosArchivoPath, pedidos);
         return RedirectToAction("Index");
     }
 }

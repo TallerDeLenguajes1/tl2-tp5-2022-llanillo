@@ -10,7 +10,6 @@
             <thead>
             <tr>
                 <th>Id</th>
-                <th>Nombre</th>
                 <th>Observación</th>
                 <th>Estado</th>
                 <th>Cliente</th>
@@ -25,7 +24,7 @@
                     <td>@pedido.Id</td>
                     <td>@pedido.Observacion</td>
                     <td>@pedido.Estado</td>
-                    <td>@pedido.Cliente.Nombre</td>
+                    <td>PLACEHOLDER</td>
                     <td>
                         <a class="btn btn-primary btn-sm" href="/Pedido/ModificarPedido?id=@pedido.Id">Editar</a>
                         <a class="btn btn-danger btn-sm" href="/Pedido/BajaPedido?id=@pedido.Id">Eliminar</a>

@@ -9,11 +9,11 @@ public class PedidoViewModel
     public string Observacion { get; set; }   
 
     [Required]
-    public Estado Estado { get; set; }
+    public string Estado { get; set; }
     
     public Cliente Cliente { get; set; }
 
-    public PedidoViewModel(int id, string observacion, Estado estado)
+    public PedidoViewModel(int id, string observacion, string estado)
     {
         Id = id;
         Observacion = observacion;

@@ -6,16 +6,16 @@ public class Pedido{
 
     public string Observacion { get; set; }
 
-    public Estado Estado { get; set; }
+    public string Estado { get; set; }
     
     public Cliente Cliente { get; set; }
 
-    public Pedido(int id, string observacion, Estado estado, Cliente cliente)
+    public Pedido(int id, string observacion, string estado)
     {
         Id = id;
         Observacion = observacion;
         Estado = estado;
-        Cliente = cliente;
+        Cliente = new Cliente("", "",1);
     }
 
     public override string? ToString()
