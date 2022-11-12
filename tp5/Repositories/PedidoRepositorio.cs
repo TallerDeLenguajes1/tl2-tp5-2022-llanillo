@@ -83,6 +83,8 @@ public class PedidoRepositorio : Repositorio<Pedido>
         {
             using var conexion = new SqliteConnection(CadenaConexion);
             var peticion = new SqliteCommand(consulta, conexion);
+            conexion.Open();
+
             peticion.Parameters.AddWithValue("@observacion", entidad.Observacion);
             peticion.Parameters.AddWithValue("@estado", entidad.Estado);
             peticion.Parameters.AddWithValue("@cliente", entidad.Cliente);
@@ -98,7 +100,25 @@ public class PedidoRepositorio : Repositorio<Pedido>
 
     public override void Actualizar(Pedido entidad)
     {
-        throw new NotImplementedException();
+        const string consulta =
+            $"update pedido SET observacion = @observacion, estado = @estado, id_cadete = @cadete, id_cliente = @cliente WHERE id = @id";
+        try
+        {
+            using var conexion = new SqliteConnection(CadenaConexion);
+            var peticion = new SqliteCommand(consulta, conexion);
+            conexion.Open();
+
+            peticion.Parameters.AddWithValue("@id", entidad.Id);
+            peticion.Parameters.AddWithValue("@obs", entidad.Observacion);
+            peticion.Parameters.AddWithValue("@estado", entidad.Estado);
+            peticion.Parameters.AddWithValue("@idCadete", entidad.Cadete);
+            peticion.Parameters.AddWithValue("@idCliente", entidad.Cliente);
+            peticion.ExecuteNonQuery();
+            conexion.Close();
+        }
+        catch (Exception e)
+        {
+        }
     }
 
     public override void Eliminar(int id)

@@ -2,6 +2,8 @@
 
 public abstract class Repositorio<T> : IRepositorio<T>
 {
+    protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
+    
     private readonly IConfiguration _configuration;
     protected readonly string? CadenaConexion;
 
