@@ -2,11 +2,11 @@
 
 public class PedidoRepositorio : Repositorio<Pedido>
 {
-    public PedidoRepositorio(string cadenaConexion) : base(cadenaConexion)
+    public PedidoRepositorio(IConfiguration configuration) : base(configuration)
     {
     }
 
-    public override Pedido BuscarPorId(int id)
+    public override Pedido? BuscarPorId(int id)
     {
         const string consulta = "select * from pedido P where P.id = id";
 
@@ -19,27 +19,69 @@ public class PedidoRepositorio : Repositorio<Pedido>
             var salida = new Pedido();
             using var reader = peticion.ExecuteReader();
             while (reader.Read())
-                salida = new Pedido(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetInt32(3));
+                salida = new Pedido(reader.GetInt32(0), reader.GetString(1), reader.GetString(2),
+                    reader.GetInt32(3), reader.GetInt32(4));
 
             conexion.Close();
             return salida;
         }
-        catch
+        catch (Exception e)
         {
-            Console.WriteLine("Error al buscar el pedido: " + id);
+            Console.WriteLine("Error al buscar el pedido: " + e.Message);
         }
 
-        return new Pedido();
+        return null;
     }
 
-    public override IEnumerable<Pedido> BuscarTodos()
+    public override IEnumerable<Pedido>? BuscarTodos()
     {
-        throw new NotImplementedException();
+        const string consulta = "select * from pedido P";
+
+        try
+        {
+            using var conexion = new SqliteConnection(CadenaConexion);
+            var peticion = new SqliteCommand(consulta, conexion);
+            conexion.Open();
+
+            var salida = new List<Pedido>();
+            using var reader = peticion.ExecuteReader();
+            while (reader.Read())
+            {
+                var pedido = new Pedido(reader.GetInt32(0), reader.GetString(1), reader.GetString(2),
+                    reader.GetInt32(3), reader.GetInt32(4));
+                salida.Add(pedido);
+            }
+
+            conexion.Close();
+            return salida;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("Error al buscar todos los pedidos: " + e.Message);
+        }
+
+        return null;
     }
 
     public override void Insertar(Pedido entidad)
     {
-        throw new NotImplementedException();
+        const string consulta =
+            "insert into pedido (observacion, estado, cliente, cadete) values (@observacion, @estado, @cliente, @cadete)";
+        try
+        {
+            using var conexion = new SqliteConnection(CadenaConexion);
+            var peticion = new SqliteCommand(consulta, conexion);
+            peticion.Parameters.AddWithValue("@observacion", entidad.Observacion);
+            peticion.Parameters.AddWithValue("@estado", entidad.Estado);
+            peticion.Parameters.AddWithValue("@cliente", entidad.Cliente);
+            peticion.Parameters.AddWithValue("@cadete", entidad.Cadete);
+            peticion.ExecuteReader();
+            conexion.Close();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("Error al insertar el pedido: " + e.Message);
+        }
     }
 
     public override void Actualizar(Pedido entidad)
@@ -49,6 +91,20 @@ public class PedidoRepositorio : Repositorio<Pedido>
 
     public override void Eliminar(int id)
     {
-        throw new NotImplementedException();
+        const string consulta =
+            "delete from pedido P where P.id = @id";
+
+        try
+        {
+            using var conexion = new SqliteConnection(CadenaConexion);
+            var peticion = new SqliteCommand(consulta, conexion);
+            peticion.Parameters.AddWithValue("@id", id);
+            peticion.ExecuteReader();
+            conexion.Close();
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine("Error al eliminar el pedido: " + e.Message);
+        }
     }
 }

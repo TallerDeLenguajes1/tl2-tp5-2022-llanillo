@@ -1,14 +1,14 @@
 ﻿namespace tp5.Repositories;
 
-public class ClienteRepositorio : Repositorio<Cliente>
+public class CadeteriaRepositorio : Repositorio<Cadeteria>
 {
-    public ClienteRepositorio(IConfiguration configuration) : base(configuration)
+    public CadeteriaRepositorio(IConfiguration configuration) : base(configuration)
     {
     }
 
-    public override Cliente? BuscarPorId(int id)
+    public override Cadeteria? BuscarPorId(int id)
     {
-        const string consulta = "select * from cliente C where C.id = id";
+        const string consulta = "select * from cadeteria C where C.id = id";
 
         try
         {
@@ -16,25 +16,25 @@ public class ClienteRepositorio : Repositorio<Cliente>
             var peticion = new SqliteCommand(consulta, conexion);
             conexion.Open();
 
-            var salida = new Cliente();
+            var salida = new Cadeteria();
             using var reader = peticion.ExecuteReader();
             while (reader.Read())
-                salida = new Cliente(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetInt32(3));
+                salida = new Cadeteria(reader.GetInt32(0), reader.GetString(1));
 
             conexion.Close();
             return salida;
         }
         catch (Exception e)
         {
-            Console.WriteLine("Error al buscar el cliente: " + e.Message);
+            Console.WriteLine("Error al buscar la cadetería: " + e.Message);
         }
 
         return null;
     }
 
-    public override IEnumerable<Cliente>? BuscarTodos()
+    public override IEnumerable<Cadeteria>? BuscarTodos()
     {
-        const string consulta = "select * from cliente C";
+        const string consulta = "select * from cadeteria C";
 
         try
         {
@@ -42,13 +42,12 @@ public class ClienteRepositorio : Repositorio<Cliente>
             var peticion = new SqliteCommand(consulta, conexion);
             conexion.Open();
 
-            var salida = new List<Cliente>();
+            var salida = new List<Cadeteria>();
             using var reader = peticion.ExecuteReader();
             while (reader.Read())
             {
-                var cliente = new Cliente(reader.GetInt32(0), reader.GetString(1), reader.GetString(2),
-                    reader.GetInt32(3));
-                salida.Add(cliente);
+                var cafeteria = new Cadeteria(reader.GetInt32(0), reader.GetString(1));
+                salida.Add(cafeteria);
             }
 
             conexion.Close();
@@ -56,33 +55,31 @@ public class ClienteRepositorio : Repositorio<Cliente>
         }
         catch (Exception e)
         {
-            Console.WriteLine("Error al buscar todos los clientes: " + e.Message);
+            Console.WriteLine("Error al buscar todos las cadeterías: " + e.Message);
         }
 
         return null;
     }
 
-    public override void Insertar(Cliente entidad)
+    public override void Insertar(Cadeteria entidad)
     {
         const string consulta =
-            "insert into cliente (nombre, direccion, telefono) values (@nombre, @direccion, @telefono)";
+            "insert into cadeteria (nombre) values (@nombre)";
         try
         {
             using var conexion = new SqliteConnection(CadenaConexion);
             var peticion = new SqliteCommand(consulta, conexion);
             peticion.Parameters.AddWithValue("@nombre", entidad.Nombre);
-            peticion.Parameters.AddWithValue("@direccion", entidad.Direccion);
-            peticion.Parameters.AddWithValue("@telefono", entidad.Telefono);
             peticion.ExecuteReader();
             conexion.Close();
         }
         catch (Exception e)
         {
-            Console.WriteLine("Error al insertar el cliente: " + e.Message);
+            Console.WriteLine("Error al insertarla cadetería: " + e.Message);
         }
     }
 
-    public override void Actualizar(Cliente entidad)
+    public override void Actualizar(Cadeteria entidad)
     {
         throw new NotImplementedException();
     }
@@ -90,7 +87,7 @@ public class ClienteRepositorio : Repositorio<Cliente>
     public override void Eliminar(int id)
     {
         const string consulta =
-            "delete from cliente C where C.id_cadete = @id";
+            "delete from cadeteria C where C.id = @id";
 
         try
         {
@@ -102,7 +99,7 @@ public class ClienteRepositorio : Repositorio<Cliente>
         }
         catch (Exception e)
         {
-            Console.WriteLine("Error al eliminar el cliente: " + e.Message);
+            Console.WriteLine("Error al eliminar la cadetería:" + e.Message);
         }
     }
 }

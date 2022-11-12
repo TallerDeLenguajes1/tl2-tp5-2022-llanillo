@@ -57,7 +57,8 @@ public static class CsvHelper
 
             foreach (var lineaSeparada in textoCsv.Select(linea => linea.Split(SeparadorCsv)))
             {
-                var pedido = new Pedido(Convert.ToInt32(lineaSeparada[0]), lineaSeparada[1], lineaSeparada[2]);
+                var pedido = new Pedido(Convert.ToInt32(lineaSeparada[0]), lineaSeparada[1], lineaSeparada[2],
+                    Convert.ToInt32(lineaSeparada[3]), Convert.ToInt32(lineaSeparada[4]));
                 salida.Add(pedido);
             }
 

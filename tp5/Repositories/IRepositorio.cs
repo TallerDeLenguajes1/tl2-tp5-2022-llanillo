@@ -2,7 +2,7 @@
 
 public interface IRepositorio<T>
 {
-    T BuscarPorId(int id);
+    T? BuscarPorId(int id);
 
     IEnumerable<T> BuscarTodos();
 

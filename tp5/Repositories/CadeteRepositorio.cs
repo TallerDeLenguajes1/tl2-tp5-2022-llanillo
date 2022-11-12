@@ -2,11 +2,11 @@
 
 public class CadeteRepositorio : Repositorio<Cadete>
 {
-    public CadeteRepositorio(string cadenaConexion) : base(cadenaConexion)
+    public CadeteRepositorio(IConfiguration configuration) : base(configuration)
     {
     }
 
-    public override Cadete BuscarPorId(int id)
+    public override Cadete? BuscarPorId(int id)
     {
         const string consulta = "select * from cadete C where C.id = id";
 
@@ -19,17 +19,18 @@ public class CadeteRepositorio : Repositorio<Cadete>
             var salida = new Cadete();
             using var reader = peticion.ExecuteReader();
             while (reader.Read())
-                salida = new Cadete(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetInt32(3));
+                salida = new Cadete(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetInt32(3),
+                    reader.GetInt32(4));
 
             conexion.Close();
             return salida;
         }
-        catch
+        catch (Exception e)
         {
-            Console.WriteLine("Error al buscar el cadete: " + id);
+            Console.WriteLine("Error al buscar el cadete: " + e.Message);
         }
 
-        return new Cadete();
+        return null;
     }
 
     public override IEnumerable<Cadete> BuscarTodos()
@@ -47,16 +48,16 @@ public class CadeteRepositorio : Repositorio<Cadete>
             while (reader.Read())
             {
                 var cadete = new Cadete(reader.GetInt32(0), reader.GetString(1), reader.GetString(2),
-                    reader.GetInt32(3));
+                    reader.GetInt32(3), reader.GetInt32(4));
                 salida.Add(cadete);
             }
 
             conexion.Close();
             return salida;
         }
-        catch
+        catch (Exception e)
         {
-            Console.WriteLine("Error al buscar todos los cadetes");
+            Console.WriteLine("Error al buscar todos los cadetes: " + e.Message);
         }
 
         return new List<Cadete>();
@@ -65,7 +66,7 @@ public class CadeteRepositorio : Repositorio<Cadete>
     public override void Insertar(Cadete entidad)
     {
         const string consulta =
-            "insert into cadete (nombre, direccion, telefono) values (@nombre, @direccion, @telefono)";
+            "insert into cadete (nombre, direccion, telefono, id_cadeteria) values (@nombre, @direccion, @telefono, @cadeteria)";
         try
         {
             using var conexion = new SqliteConnection(CadenaConexion);
@@ -73,12 +74,13 @@ public class CadeteRepositorio : Repositorio<Cadete>
             peticion.Parameters.AddWithValue("@nombre", entidad.Nombre);
             peticion.Parameters.AddWithValue("@direccion", entidad.Direccion);
             peticion.Parameters.AddWithValue("@telefono", entidad.Telefono);
+            peticion.Parameters.AddWithValue("@cadeteria", entidad.Cadeteria);
             peticion.ExecuteReader();
             conexion.Close();
         }
-        catch
+        catch (Exception e)
         {
-            Console.WriteLine("Error al insertar el cadete: " + entidad.Nombre);
+            Console.WriteLine("Error al insertar el cadete: " + e.Message);
         }
     }
 
@@ -100,9 +102,9 @@ public class CadeteRepositorio : Repositorio<Cadete>
             peticion.ExecuteReader();
             conexion.Close();
         }
-        catch
+        catch (Exception e)
         {
-            Console.WriteLine("Error al eliminar el cadete: " + id);
+            Console.WriteLine("Error al eliminar el cadete: " + e.Message);
         }
     }
 }

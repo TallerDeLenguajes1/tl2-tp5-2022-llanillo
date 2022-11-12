@@ -6,7 +6,7 @@ public abstract class Persona
     {
     }
 
-    public Persona(int id, string nombre, string direccion, long telefono)
+    public Persona(int id, string nombre, string direccion, int telefono)
     {
         Id = id;
         Nombre = nombre;
@@ -20,5 +20,10 @@ public abstract class Persona
 
     public string Direccion { get; set; }
 
-    public long Telefono { get; set; }
+    public int Telefono { get; set; }
+
+    public override string ToString()
+    {
+        return "Código: " + Id + " Nombre: " + Nombre + " Dirección: " + Direccion + " Teléfono: " + Telefono;
+    }
 }

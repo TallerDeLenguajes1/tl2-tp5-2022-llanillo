@@ -2,14 +2,16 @@
 
 public abstract class Repositorio<T> : IRepositorio<T>
 {
-    protected readonly string CadenaConexion;
+    private readonly IConfiguration _configuration;
+    protected readonly string? CadenaConexion;
 
-    public Repositorio(string cadenaConexion)
+    protected Repositorio(IConfiguration configuration)
     {
-        CadenaConexion = cadenaConexion;
+        _configuration = configuration;
+        CadenaConexion = _configuration.GetConnectionString("ConnectionString");
     }
 
-    public abstract T BuscarPorId(int id);
+    public abstract T? BuscarPorId(int id);
 
     public abstract IEnumerable<T> BuscarTodos();
 
