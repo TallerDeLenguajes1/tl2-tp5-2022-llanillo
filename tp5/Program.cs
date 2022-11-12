@@ -1,6 +1,7 @@
 global using static tp5.Util.CsvHelper;
 global using tp5.ViewModels.Cadete;
 global using tp5.ViewModels.Pedido;
+global using tp5.Repositories;
 global using tp5.Models;
 global using Microsoft.AspNetCore.Mvc;
 global using AutoMapper;
