@@ -31,7 +31,7 @@ public class CadeteRepositorio : Repositorio<Cadete>
         }
         catch (Exception e)
         {
-            Console.WriteLine("Error al buscar el cadete: " + e.Message);
+            Logger.Debug("Error al buscar el cadete {Id} - {Error}", id, e.Message);
         }
 
         return null;
@@ -66,7 +66,7 @@ public class CadeteRepositorio : Repositorio<Cadete>
         }
         catch (Exception e)
         {
-            Console.WriteLine("Error al buscar todos los cadetes: " + e.Message);
+            Logger.Debug("Error al buscar todos los cadetes - {Error}", e.Message);
         }
 
         return new List<Cadete>();
@@ -89,13 +89,31 @@ public class CadeteRepositorio : Repositorio<Cadete>
         }
         catch (Exception e)
         {
-            Console.WriteLine("Error al insertar el cadete: " + e.Message);
+            Logger.Debug("Error al insertar el cadete {Id} - {Error}", entidad.Id, e.Message);
         }
     }
 
     public override void Actualizar(Cadete entidad)
     {
-        throw new NotImplementedException();
+        const string consulta =
+            "update cadete SET nombre = @nombre, direccion = @direccion, telefono = @telefono where id = @id";
+        try
+        {
+            using var conexion = new SqliteConnection(CadenaConexion);
+            var peticion = new SqliteCommand(consulta, conexion);
+            conexion.Open();
+
+            peticion.Parameters.AddWithValue("@id", entidad.Id);
+            peticion.Parameters.AddWithValue("@nombre", entidad.Nombre);
+            peticion.Parameters.AddWithValue("@direccion", entidad.Direccion);
+            peticion.Parameters.AddWithValue("@telefono", entidad.Telefono);
+            peticion.ExecuteNonQuery();
+            conexion.Close();
+        }
+        catch (Exception e)
+        {
+            Logger.Debug("Error al insertar el pedido {Id} - {Error}", entidad.Id, e.Message);
+        }
     }
 
     public override void Eliminar(int id)
@@ -113,7 +131,7 @@ public class CadeteRepositorio : Repositorio<Cadete>
         }
         catch (Exception e)
         {
-            Console.WriteLine("Error al eliminar el cadete: " + e.Message);
+            Logger.Debug("Error al eliminar el cadete {Id} - {Error}", id, e.Message);
         }
     }
 }

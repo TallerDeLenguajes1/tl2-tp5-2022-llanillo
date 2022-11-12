@@ -33,7 +33,7 @@ public class PedidoRepositorio : Repositorio<Pedido>
         }
         catch (Exception e)
         {
-            Console.WriteLine("Error al buscar el pedido: " + e.Message);
+            Logger.Debug("Error al buscar el pedido {Id} - {Error}", id, e.Message);
         }
 
         return null;
@@ -69,7 +69,7 @@ public class PedidoRepositorio : Repositorio<Pedido>
         }
         catch (Exception e)
         {
-            Console.WriteLine("Error al buscar todos los pedidos: " + e.Message);
+            Logger.Debug("Error al buscar todos los pedidos - {Error}", e.Message);
         }
 
         return new List<Pedido>();
@@ -94,7 +94,7 @@ public class PedidoRepositorio : Repositorio<Pedido>
         }
         catch (Exception e)
         {
-            Console.WriteLine("Error al insertar el pedido: " + e.Message);
+            Logger.Debug("Error al insertar el pedido {Id} - {Error}", entidad.Id, e.Message);
         }
     }
 
@@ -118,6 +118,7 @@ public class PedidoRepositorio : Repositorio<Pedido>
         }
         catch (Exception e)
         {
+            Logger.Debug("Error al insertar el pedido {Id} - {Error}", entidad.Id, e.Message);
         }
     }
 
@@ -136,7 +137,7 @@ public class PedidoRepositorio : Repositorio<Pedido>
         }
         catch (Exception e)
         {
-            Console.WriteLine("Error al eliminar el pedido: " + e.Message);
+            Logger.Debug("Error al eliminar el pedido {Id} - {Error}", id, e.Message);
         }
     }
 }

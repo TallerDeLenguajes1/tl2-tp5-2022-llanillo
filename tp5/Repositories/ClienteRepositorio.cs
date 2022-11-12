@@ -26,7 +26,7 @@ public class ClienteRepositorio : Repositorio<Cliente>
         }
         catch (Exception e)
         {
-            Console.WriteLine("Error al buscar el cliente: " + e.Message);
+            Logger.Debug("Error al buscar el cliente {Id} - {Error}", id, e.Message);
         }
 
         return null;
@@ -56,7 +56,7 @@ public class ClienteRepositorio : Repositorio<Cliente>
         }
         catch (Exception e)
         {
-            Console.WriteLine("Error al buscar todos los clientes: " + e.Message);
+            Logger.Debug("Error al buscar todos los clientes - {Error}", e.Message);
         }
 
         return null;
@@ -78,13 +78,31 @@ public class ClienteRepositorio : Repositorio<Cliente>
         }
         catch (Exception e)
         {
-            Console.WriteLine("Error al insertar el cliente: " + e.Message);
+            Logger.Debug("Error al insertar el cliente {Id} - {Error}", entidad.Id, e.Message);
         }
     }
 
     public override void Actualizar(Cliente entidad)
     {
-        throw new NotImplementedException();
+        const string consulta =
+            "update cliente SET nombre = @nombre, direccion = @direccion, telefono = @telefono where id = @id";
+        try
+        {
+            using var conexion = new SqliteConnection(CadenaConexion);
+            var peticion = new SqliteCommand(consulta, conexion);
+            conexion.Open();
+
+            peticion.Parameters.AddWithValue("@id", entidad.Id);
+            peticion.Parameters.AddWithValue("@nombre", entidad.Nombre);
+            peticion.Parameters.AddWithValue("@direccion", entidad.Direccion);
+            peticion.Parameters.AddWithValue("@telefono", entidad.Telefono);
+            peticion.ExecuteNonQuery();
+            conexion.Close();
+        }
+        catch (Exception e)
+        {
+            Logger.Debug("Error al actualizar el cliente {Id} - {Error}", entidad.Id, e.Message);
+        }
     }
 
     public override void Eliminar(int id)
@@ -102,7 +120,7 @@ public class ClienteRepositorio : Repositorio<Cliente>
         }
         catch (Exception e)
         {
-            Console.WriteLine("Error al eliminar el cliente: " + e.Message);
+            Logger.Debug("Error al eliminar el cliente {Id} - {Error}", id, e.Message);
         }
     }
 }
