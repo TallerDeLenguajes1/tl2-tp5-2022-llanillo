@@ -32,7 +32,7 @@ public class CadeteriaRepositorio : Repositorio<Cadeteria>
         return null;
     }
 
-    public override IEnumerable<Cadeteria>? BuscarTodos()
+    public override IEnumerable<Cadeteria> BuscarTodos()
     {
         const string consulta = "select * from cadeteria C";
 

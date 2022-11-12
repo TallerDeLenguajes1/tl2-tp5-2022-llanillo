@@ -19,8 +19,14 @@ public class PedidoRepositorio : Repositorio<Pedido>
             var salida = new Pedido();
             using var reader = peticion.ExecuteReader();
             while (reader.Read())
-                salida = new Pedido(reader.GetInt32(0), reader.GetString(1), reader.GetString(2),
-                    reader.GetInt32(3), reader.GetInt32(4));
+                salida = new Pedido
+                {
+                    Id = reader.GetInt32(0),
+                    Observacion = reader.GetString(1),
+                    Estado = reader.GetString(2),
+                    Cliente = reader.IsDBNull(3) ? null : reader.GetInt32(3),
+                    Cadete = reader.IsDBNull(4) ? null : reader.GetInt32(4)
+                };
 
             conexion.Close();
             return salida;
@@ -33,7 +39,7 @@ public class PedidoRepositorio : Repositorio<Pedido>
         return null;
     }
 
-    public override IEnumerable<Pedido>? BuscarTodos()
+    public override IEnumerable<Pedido> BuscarTodos()
     {
         const string consulta = "select * from pedido P";
 
@@ -47,8 +53,14 @@ public class PedidoRepositorio : Repositorio<Pedido>
             using var reader = peticion.ExecuteReader();
             while (reader.Read())
             {
-                var pedido = new Pedido(reader.GetInt32(0), reader.GetString(1), reader.GetString(2),
-                    reader.GetInt32(3), reader.GetInt32(4));
+                var pedido = new Pedido
+                {
+                    Id = reader.GetInt32(0),
+                    Observacion = reader.GetString(1),
+                    Estado = reader.GetString(2),
+                    Cliente = reader.IsDBNull(3) ? null : reader.GetInt32(3),
+                    Cadete = reader.IsDBNull(4) ? null : reader.GetInt32(4)
+                };
                 salida.Add(pedido);
             }
 
@@ -60,7 +72,7 @@ public class PedidoRepositorio : Repositorio<Pedido>
             Console.WriteLine("Error al buscar todos los pedidos: " + e.Message);
         }
 
-        return null;
+        return new List<Pedido>();
     }
 
     public override void Insertar(Pedido entidad)

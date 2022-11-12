@@ -19,9 +19,13 @@ public class CadeteRepositorio : Repositorio<Cadete>
             var salida = new Cadete();
             using var reader = peticion.ExecuteReader();
             while (reader.Read())
-                salida = new Cadete(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetInt32(3),
-                    reader.GetInt32(4));
-
+                salida = new Cadete
+                {
+                    Id = reader.GetInt32(0), Nombre = reader.GetString(1),
+                    Direccion = reader.GetString(2),
+                    Telefono = reader.GetInt32(3),
+                    Cadeteria = reader.IsDBNull(4) ? null : reader.GetInt32(4)
+                };
             conexion.Close();
             return salida;
         }
@@ -47,8 +51,13 @@ public class CadeteRepositorio : Repositorio<Cadete>
             using var reader = peticion.ExecuteReader();
             while (reader.Read())
             {
-                var cadete = new Cadete(reader.GetInt32(0), reader.GetString(1), reader.GetString(2),
-                    reader.GetInt32(3), reader.GetInt32(4));
+                var cadete = new Cadete
+                {
+                    Id = reader.GetInt32(0), Nombre = reader.GetString(1),
+                    Direccion = reader.GetString(2),
+                    Telefono = reader.GetInt32(3),
+                    Cadeteria = reader.IsDBNull(4) ? null : reader.GetInt32(4)
+                };
                 salida.Add(cadete);
             }
 

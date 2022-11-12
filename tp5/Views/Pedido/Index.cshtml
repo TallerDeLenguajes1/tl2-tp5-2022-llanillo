@@ -12,7 +12,8 @@
                 <th>Id</th>
                 <th>Observación</th>
                 <th>Estado</th>
-                <th>Cliente</th>
+                <th>Cliente</th>>
+                <th>Cadete</th>>
                 <th>Acciones</th>
             </tr>
             </thead>
@@ -24,7 +25,8 @@
                     <td>@pedido.Id</td>
                     <td>@pedido.Observacion</td>
                     <td>@pedido.Estado</td>
-                    <td>PLACEHOLDER</td>
+                    <td>@pedido.Cliente</td>
+                    <td>@pedido.Cadete</td>
                     <td>
                         <a class="btn btn-primary btn-sm" href="/Pedido/ModificarPedido?id=@pedido.Id">Editar</a>
                         <a class="btn btn-danger btn-sm" href="/Pedido/BajaPedido?id=@pedido.Id">Eliminar</a>

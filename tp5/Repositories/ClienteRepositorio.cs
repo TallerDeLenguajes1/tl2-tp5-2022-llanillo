@@ -32,7 +32,7 @@ public class ClienteRepositorio : Repositorio<Cliente>
         return null;
     }
 
-    public override IEnumerable<Cliente>? BuscarTodos()
+    public override IEnumerable<Cliente> BuscarTodos()
     {
         const string consulta = "select * from cliente C";
 
