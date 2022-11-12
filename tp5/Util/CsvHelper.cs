@@ -4,13 +4,13 @@ namespace tp5.Util;
 
 public static class CsvHelper
 {
-    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     private const string SeparadorCsv = ",";
+    private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
     public static string VerRutaProyecto()
     {
         var envDir = Environment.CurrentDirectory;
-        DirectoryInfo? pathProyecto = Directory.GetParent(envDir)?.Parent;
+        var pathProyecto = Directory.GetParent(envDir)?.Parent;
         return pathProyecto?.Parent != null ? pathProyecto.Parent.FullName : string.Empty;
     }
 
@@ -81,9 +81,7 @@ public static class CsvHelper
                      into arregloEntidad
                      where arregloEntidad != null
                      select string.Join(SeparadorCsv, arregloEntidad))
-            {
                 streamWriter.WriteLine(contenido);
-            }
 
             // streamWriter.WriteLine(string.Format(x.Id + SeparadorCsv + x.Nombre + SeparadorCsv + x.Direccion +
             // SeparadorCsv + x.Telefono)));

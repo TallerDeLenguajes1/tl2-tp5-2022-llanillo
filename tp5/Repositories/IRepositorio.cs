@@ -1,6 +1,6 @@
-﻿namespace tp5.Repositories.Cadete;
+﻿namespace tp5.Repositories;
 
-public interface IRepositorio <T>
+public interface IRepositorio<T>
 {
     T BuscarPorId(int id);
 

@@ -4,6 +4,7 @@ global using tp5.ViewModels.Pedido;
 global using tp5.Repositories;
 global using tp5.Models;
 global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.Data.Sqlite;
 global using AutoMapper;
 global using System.ComponentModel.DataAnnotations;
 
@@ -12,6 +13,12 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddMvc();
+// builder.Services.AddControllers();
+builder.Services.AddLogging();
+builder.Services.AddTransient<Repositorio<Cadete>, CadeteRepositorio>();
+builder.Services.AddTransient<Repositorio<Pedido>, PedidoRepositorio>();
+builder.Services.AddTransient<Repositorio<Cliente>, ClienteRepositorio>();
 
 var app = builder.Build();
 
@@ -31,7 +38,7 @@ app.UseRouting();
 app.UseAuthorization();
 
 app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    "default",
+    "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();

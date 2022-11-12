@@ -4,10 +4,10 @@ public class PedidoController : Controller
 {
     private const string PedidosArchivoPath = "C:\\Taller\\Pedidos.csv";
 
+    private static int _id;
+
     private readonly ILogger<PedidoController> _logger;
     private readonly IMapper _mapper;
-
-    private static int _id;
 
     public PedidoController(ILogger<PedidoController> logger, IMapper mapper)
     {
@@ -60,6 +60,7 @@ public class PedidoController : Controller
         CrearArchivo(PedidosArchivoPath, pedidos);
         return RedirectToAction("Index");
     }
+
     [HttpGet]
     public IActionResult BajaPedido(int id)
     {

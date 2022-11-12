@@ -4,10 +4,10 @@ public class CadeteController : Controller
 {
     private const string CadetesArchivoPath = "C:\\Taller\\Cadeteria.csv";
 
+    private static int _id;
+
     private readonly ILogger<CadeteController> _logger;
     private readonly IMapper _mapper;
-
-    private static int _id;
 
     public CadeteController(ILogger<CadeteController> logger, IMapper mapper)
     {

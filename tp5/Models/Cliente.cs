@@ -2,5 +2,11 @@ namespace tp5.Models;
 
 public class Cliente : Persona
 {
-    public Cliente(string nombre, string direccion, int telefono) : base(nombre, direccion, telefono) { }
+    public Cliente()
+    {
+    }
+
+    public Cliente(int id, string nombre, string direccion, int telefono) : base(id, nombre, direccion, telefono)
+    {
+    }
 }
