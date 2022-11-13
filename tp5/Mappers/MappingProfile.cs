@@ -5,7 +5,9 @@ public class MappingProfile : Profile
     public MappingProfile()
     {
         CreateMap<Cadete, CadeteViewModel>().ReverseMap();
-        CreateMap<Pedido, PedidoViewModel>().ReverseMap();
         CreateMap<Cliente, ClienteViewModel>().ReverseMap();
+        CreateMap<Pedido, PedidoViewModel>().ReverseMap();
+        CreateMap<Pedido, PedidoAltaViewModel>().ReverseMap();
+        CreateMap<Pedido, PedidoModificadoViewModel>().ReverseMap();
     }
 }

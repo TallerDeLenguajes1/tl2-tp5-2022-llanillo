@@ -1,7 +1,7 @@
-﻿@model PedidoViewModel
+﻿@model PedidoModificadoViewModel
 
 @{
-    ViewBag.Title = "Modificar Cadete";
+    ViewBag.Title = "Modificar Pedido";
     Layout = "_Layout";
 }
 
@@ -14,16 +14,35 @@
             <input type="hidden" name="Id" value="@Model.Id"/>
 
             <div class="row mb-3">
-                <label class="col-sm-3 col-form-label" for="observacion">Nombre: </label>
+                <label class="col-sm-3 col-form-label" for="observacion">Observación: </label>
                 <div class="col-sm-6">
                     <input class="form-control" type="text" id="observacion" name="Observacion" value="@Model.Observacion">
                 </div>
             </div>
 
             <div class="row mb-3">
-                <label class="col-sm-3 col-form-label" for="estado">Dirección:</label>
+                <label class="col-sm-3 col-form-label" for="estado">Estado:</label>
                 <div class="col-sm-6">
                     <input class="form-control" type="text" id="estado" name="Estado" value="@Model.Estado">
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-sm-3 col-form-label" for="cadete">Cadete:</label>
+                <div class="col-sm-6">
+                    <select class="form-select form-select-sm" name="Cadete" id="cadete">
+                        @foreach (var cadete in Model.Cadetes)
+                        {
+                            @if (cadete.Id == @Model.Cadete)
+                            {
+                                <option value="@cadete.Id" selected>@cadete.Nombre</option>
+                            }
+                            else
+                            {
+                                <option value="@cadete.Id">@cadete.Nombre</option>
+                            }
+                        }
+                    </select>
                 </div>
             </div>
 

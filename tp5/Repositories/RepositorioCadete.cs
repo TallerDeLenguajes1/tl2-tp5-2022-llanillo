@@ -1,40 +1,46 @@
 ﻿namespace tp5.Repositories;
 
-public class ClienteRepositorio : Repositorio<Cliente>
+public class RepositorioCadete : Repositorio<Cadete>
 {
-    public ClienteRepositorio(IConfiguration configuration) : base(configuration)
+    public RepositorioCadete(IConfiguration configuration) : base(configuration)
     {
     }
 
-    public override Cliente? BuscarPorId(int id)
+    public override Cadete? BuscarPorId(int id)
     {
-        const string consulta = "select * from cliente C where C.id = id";
+        const string consulta = "select * from cadete C where C.id = @id";
 
         try
         {
             using var conexion = new SqliteConnection(CadenaConexion);
             var peticion = new SqliteCommand(consulta, conexion);
+            peticion.Parameters.AddWithValue("@id", id);
             conexion.Open();
 
-            var salida = new Cliente();
+            var salida = new Cadete();
             using var reader = peticion.ExecuteReader();
             while (reader.Read())
-                salida = new Cliente(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetInt32(3));
-
+                salida = new Cadete
+                {
+                    Id = reader.GetInt32(0), Nombre = reader.GetString(1),
+                    Direccion = reader.GetString(2),
+                    Telefono = reader.GetInt32(3),
+                    Cadeteria = reader.IsDBNull(4) ? null : reader.GetInt32(4)
+                };
             conexion.Close();
             return salida;
         }
         catch (Exception e)
         {
-            Logger.Debug("Error al buscar el cliente {Id} - {Error}", id, e.Message);
+            Logger.Debug("Error al buscar el cadete {Id} - {Error}", id, e.Message);
         }
 
         return null;
     }
 
-    public override IEnumerable<Cliente> BuscarTodos()
+    public override IEnumerable<Cadete> BuscarTodos()
     {
-        const string consulta = "select * from cliente C";
+        const string consulta = "select * from cadete C";
 
         try
         {
@@ -42,13 +48,18 @@ public class ClienteRepositorio : Repositorio<Cliente>
             var peticion = new SqliteCommand(consulta, conexion);
             conexion.Open();
 
-            var salida = new List<Cliente>();
+            var salida = new List<Cadete>();
             using var reader = peticion.ExecuteReader();
             while (reader.Read())
             {
-                var cliente = new Cliente(reader.GetInt32(0), reader.GetString(1), reader.GetString(2),
-                    reader.GetInt32(3));
-                salida.Add(cliente);
+                var cadete = new Cadete
+                {
+                    Id = reader.GetInt32(0), Nombre = reader.GetString(1),
+                    Direccion = reader.GetString(2),
+                    Telefono = reader.GetInt32(3),
+                    Cadeteria = reader.IsDBNull(4) ? null : reader.GetInt32(4)
+                };
+                salida.Add(cadete);
             }
 
             conexion.Close();
@@ -56,16 +67,16 @@ public class ClienteRepositorio : Repositorio<Cliente>
         }
         catch (Exception e)
         {
-            Logger.Debug("Error al buscar todos los clientes - {Error}", e.Message);
+            Logger.Debug("Error al buscar todos los cadetes - {Error}", e.Message);
         }
 
-        return null;
+        return new List<Cadete>();
     }
 
-    public override void Insertar(Cliente entidad)
+    public override void Insertar(Cadete entidad)
     {
         const string consulta =
-            "insert into cliente (nombre, direccion, telefono) values (@nombre, @direccion, @telefono)";
+            "insert into cadete (nombre, direccion, telefono, id_cadeteria) values (@nombre, @direccion, @telefono, @cadeteria)";
         try
         {
             using var conexion = new SqliteConnection(CadenaConexion);
@@ -73,19 +84,20 @@ public class ClienteRepositorio : Repositorio<Cliente>
             peticion.Parameters.AddWithValue("@nombre", entidad.Nombre);
             peticion.Parameters.AddWithValue("@direccion", entidad.Direccion);
             peticion.Parameters.AddWithValue("@telefono", entidad.Telefono);
+            peticion.Parameters.AddWithValue("@cadeteria", entidad.Cadeteria);
             peticion.ExecuteReader();
             conexion.Close();
         }
         catch (Exception e)
         {
-            Logger.Debug("Error al insertar el cliente {Id} - {Error}", entidad.Id, e.Message);
+            Logger.Debug("Error al insertar el cadete {Id} - {Error}", entidad.Id, e.Message);
         }
     }
 
-    public override void Actualizar(Cliente entidad)
+    public override void Actualizar(Cadete entidad)
     {
         const string consulta =
-            "update cliente SET nombre = @nombre, direccion = @direccion, telefono = @telefono where id = @id";
+            "update cadete SET nombre = @nombre, direccion = @direccion, telefono = @telefono where id = @id";
         try
         {
             using var conexion = new SqliteConnection(CadenaConexion);
@@ -101,14 +113,14 @@ public class ClienteRepositorio : Repositorio<Cliente>
         }
         catch (Exception e)
         {
-            Logger.Debug("Error al actualizar el cliente {Id} - {Error}", entidad.Id, e.Message);
+            Logger.Debug("Error al insertar el pedido {Id} - {Error}", entidad.Id, e.Message);
         }
     }
 
     public override void Eliminar(int id)
     {
         const string consulta =
-            "delete from cliente C where C.id_cadete = @id";
+            "delete from cadete C where C.id_cadete = @id";
 
         try
         {
@@ -120,7 +132,7 @@ public class ClienteRepositorio : Repositorio<Cliente>
         }
         catch (Exception e)
         {
-            Logger.Debug("Error al eliminar el cliente {Id} - {Error}", id, e.Message);
+            Logger.Debug("Error al eliminar el cadete {Id} - {Error}", id, e.Message);
         }
     }
 }

@@ -20,9 +20,9 @@ builder.Services.AddLogging();
 // var connectionString = builder.Configuration.GetConnectionString("ConnectionString");
 // if (connectionString is not null)
 // {
-builder.Services.AddTransient<IRepositorio<Cadete>, CadeteRepositorio>();
-builder.Services.AddTransient<IRepositorio<Pedido>, PedidoRepositorio>();
-builder.Services.AddTransient<IRepositorio<Cliente>, ClienteRepositorio>();
+builder.Services.AddTransient<IRepositorio<Cadete>, RepositorioCadete>();
+builder.Services.AddTransient<IRepositorioPedido, RepositorioPedido>();
+builder.Services.AddTransient<IRepositorio<Cliente>, RepositorioCliente>();
 // }
 
 var app = builder.Build();

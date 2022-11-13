@@ -1,19 +1,20 @@
 ﻿namespace tp5.Repositories;
 
-public class CadeteriaRepositorio : Repositorio<Cadeteria>
+public class RepositorioCadeteria : Repositorio<Cadeteria>
 {
-    public CadeteriaRepositorio(IConfiguration configuration) : base(configuration)
+    public RepositorioCadeteria(IConfiguration configuration) : base(configuration)
     {
     }
 
     public override Cadeteria? BuscarPorId(int id)
     {
-        const string consulta = "select * from cadeteria C where C.id = id";
+        const string consulta = "select * from cadeteria C where C.id = @id";
 
         try
         {
             using var conexion = new SqliteConnection(CadenaConexion);
             var peticion = new SqliteCommand(consulta, conexion);
+            peticion.Parameters.AddWithValue("@id", id);
             conexion.Open();
 
             var salida = new Cadeteria();
