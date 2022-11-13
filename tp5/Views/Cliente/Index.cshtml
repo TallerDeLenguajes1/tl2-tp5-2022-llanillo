@@ -1,8 +1,37 @@
-﻿@model System.Collections.Generic.List<tp5.ViewModels.ClienteViewModel>
+﻿@model List<ClienteViewModel>
 
-@{
-    ViewBag.Title = "title";
-    Layout = "_Layout";
-}
+<h2>Lista de Clientes</h2>
 
-<h2>title</h2>
+<a class="btn btn-primary btn-sm" href="/Cliente/AltaCliente">Crear nuevo cliente</a>
+
+<section>
+    <article>
+        <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nombre</th>
+                <th>Direccion</th>
+                <th>Teléfono</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            @foreach (var cliente in Model)
+            {
+                <tr>
+                    <td>@cliente.Id</td>
+                    <td>@cliente.Nombre</td>
+                    <td>@cliente.Direccion</td>
+                    <td>@cliente.Telefono</td>
+                    <td>
+                        <a class="btn btn-primary btn-sm" href="/Cliente/ModificarCliente?id=@cliente.Id">Editar</a>
+                        <a class="btn btn-danger btn-sm" href="/Cliente/BajaCliente?id=@cliente.Id">Eliminar</a>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+
+    </article>
+</section>

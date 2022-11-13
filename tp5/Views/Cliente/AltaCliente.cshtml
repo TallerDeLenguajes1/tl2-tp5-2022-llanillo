@@ -1,8 +1,42 @@
-﻿@model dynamic
+﻿@model Cadete
 
-@{
-    ViewBag.Title = "title";
-    Layout = "_Layout";
-}
+<body>
+<header>
+    <main>
+        <h2>Registro de Clientes</h2>
+        <form asp-controller="Cliente" asp-action="AltaCliente" method="post">
 
-<h2>title</h2>
+            <div class="row mb-3">
+                <label class="col-sm-3 col-form-label" for="nombre">Nombre: </label>
+                <div class="col-sm-6">
+                    <input class="form-control" type="text" id="nombre" name="Nombre" placeholder="Escriba un nombre">
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-sm-3 col-form-label" for="direccion">Dirección:</label>
+                <div class="col-sm-6">
+                    <input class="form-control" type="text" id="direccion" name="Direccion" placeholder="Escriba una dirección">
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-sm-3 col-form-label" for="telefono">Teléfono</label>
+                <div class="col-sm-6">
+                    <input class="form-control" type="tel" id="telefono" name="Telefono" placeholder="Escriba un teléfono">
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="offset-sm-3 col-sm-3 d-grid">
+                    <input class="btn btn-primary" type="submit" value="Crear">
+                </div>
+                <div class="col-sm-3 d-grid">
+                    <input class="btn btn-primary" type="reset" value="Borar">
+                </div>
+            </div>
+
+        </form>
+    </main>
+</header>
+</body>
