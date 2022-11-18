@@ -61,6 +61,11 @@ public class PedidoController : Controller
             var pedido = _mapper.Map<Pedido>(pedidoViewModel);
             _repositorio.Insertar(pedido);
         }
+        else
+        {
+            var errores = ModelState.Values.SelectMany(x => x.Errors);
+            Console.WriteLine(errores);
+        }
 
         return RedirectToAction("Index");
     }
@@ -82,10 +87,16 @@ public class PedidoController : Controller
     [HttpPost]
     public IActionResult ModificarPedido(PedidoViewModel pedidoViewModel)
     {
+        Console.WriteLine(pedidoViewModel.Cadete);
         if (ModelState.IsValid)
         {
             var pedido = _mapper.Map<Pedido>(pedidoViewModel);
             _repositorio.Actualizar(pedido);
+        }
+        else
+        {
+            var errores = ModelState.Values.SelectMany(x => x.Errors);
+            Console.WriteLine(errores);
         }
 
         return RedirectToAction("Index");

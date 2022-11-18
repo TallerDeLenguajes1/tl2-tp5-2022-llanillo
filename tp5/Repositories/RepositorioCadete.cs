@@ -1,4 +1,6 @@
-﻿namespace tp5.Repositories;
+﻿using System.Drawing.Printing;
+
+namespace tp5.Repositories;
 
 public class RepositorioCadete : Repositorio<Cadete>
 {
@@ -108,7 +110,7 @@ public class RepositorioCadete : Repositorio<Cadete>
             peticion.Parameters.AddWithValue("@nombre", entidad.Nombre);
             peticion.Parameters.AddWithValue("@direccion", entidad.Direccion);
             peticion.Parameters.AddWithValue("@telefono", entidad.Telefono);
-            peticion.ExecuteNonQuery();
+            peticion.ExecuteReader();
             conexion.Close();
         }
         catch (Exception e)

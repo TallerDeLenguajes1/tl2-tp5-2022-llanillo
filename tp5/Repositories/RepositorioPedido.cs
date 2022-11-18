@@ -115,7 +115,7 @@ public class RepositorioPedido : Repositorio<Pedido>, IRepositorioPedido
             peticion.Parameters.AddWithValue("@estado", entidad.Estado);
             peticion.Parameters.AddWithValue("@cadete", entidad.Cadete);
             peticion.Parameters.AddWithValue("@cliente", entidad.Cliente);
-            peticion.ExecuteNonQuery();
+            peticion.ExecuteReader();
             conexion.Close();
         }
         catch (Exception e)

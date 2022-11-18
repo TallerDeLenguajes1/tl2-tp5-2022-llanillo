@@ -97,7 +97,7 @@ public class RepositorioCliente : Repositorio<Cliente>
             peticion.Parameters.AddWithValue("@nombre", entidad.Nombre);
             peticion.Parameters.AddWithValue("@direccion", entidad.Direccion);
             peticion.Parameters.AddWithValue("@telefono", entidad.Telefono);
-            peticion.ExecuteNonQuery();
+            peticion.ExecuteReader();
             conexion.Close();
         }
         catch (Exception e)

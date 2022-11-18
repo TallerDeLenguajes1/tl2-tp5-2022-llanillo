@@ -14,7 +14,7 @@ public class PedidoModificadoViewModel
     [Display(Name = "Estado")]
     public string Estado { get; set; }
 
-    [Required] public int Cadete { get; set; }
+    public int Cadete { get; set; }
 
     public List<CadeteViewModel> Cadetes { get; set; }
 

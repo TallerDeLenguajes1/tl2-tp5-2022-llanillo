@@ -34,6 +34,11 @@ public class ClienteController : Controller
             var cliente = _mapper.Map<Cliente>(clienteViewModel);
             _repositorio.Insertar(cliente);
         }
+        else
+        {
+            var errores = ModelState.Values.SelectMany(x => x.Errors);
+            Console.WriteLine(errores);
+        }
 
         return RedirectToAction("Index");
     }
@@ -54,6 +59,11 @@ public class ClienteController : Controller
         {
             var cliente = _mapper.Map<Cliente>(clienteViewModel);
             _repositorio.Actualizar(cliente);
+        }
+        else
+        {
+            var errores = ModelState.Values.SelectMany(x => x.Errors);
+            Console.WriteLine(errores);
         }
 
         return RedirectToAction("Index");

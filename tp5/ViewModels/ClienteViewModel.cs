@@ -15,7 +15,6 @@ public class ClienteViewModel
     public string Direccion { get; set; }
 
     [Required]
-    [Phone]
     [Display(Name = "Teléfono")]
     public int Telefono { get; set; }
 

@@ -11,26 +11,26 @@
         <h2>@ViewBag.Title</h2>
         <form asp-controller="Cadete" asp-action="ModificarCadete" method="post">
 
-            <input type="hidden" name="Id" value="@Model.Id"/>
+            @Html.HiddenFor(model => model.Id)
 
             <div class="row mb-3">
-                <label class="col-sm-3 col-form-label" for="nombre">Nombre: </label>
+                <label class="col-sm-3 col-form-label" asp-for="Nombre">Nombre: </label>
                 <div class="col-sm-6">
-                    <input class="form-control" type="text" id="nombre" name="Nombre" value="@Model.Nombre">
+                    <input class="form-control" type="text" asp-for="Nombre" value="@Model.Nombre">
                 </div>
             </div>
 
             <div class="row mb-3">
-                <label class="col-sm-3 col-form-label" for="direccion">Dirección:</label>
+                <label class="col-sm-3 col-form-label" asp-for="Direccion">Dirección:</label>
                 <div class="col-sm-6">
-                    <input class="form-control" type="text" id="direccion" name="Direccion" value="@Model.Direccion">
+                    <input class="form-control" type="text" asp-for="Direccion" value="@Model.Direccion">
                 </div>
             </div>
 
             <div class="row mb-3">
-                <label class="col-sm-3 col-form-label" for="telefono">Teléfono</label>
+                <label class="col-sm-3 col-form-label" asp-for="Telefono">Teléfono</label>
                 <div class="col-sm-6">
-                    <input class="form-control" type="tel" id="telefono" name="Telefono" value="@Model.Telefono">
+                    <input class="form-control" type="tel" asp-for="Telefono" value="@Model.Telefono">
                 </div>
             </div>
 

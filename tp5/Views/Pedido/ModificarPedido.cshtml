@@ -11,26 +11,26 @@
         <h2>@ViewBag.Title</h2>
         <form asp-controller="Pedido" asp-action="ModificarPedido" method="post">
 
-            <input type="hidden" name="Id" value="@Model.Id"/>
+            @Html.HiddenFor(model => model.Id);
 
             <div class="row mb-3">
-                <label class="col-sm-3 col-form-label" for="observacion">Observación: </label>
+                <label class="col-sm-3 col-form-label" asp-for="Observacion">Observación: </label>
                 <div class="col-sm-6">
-                    <input class="form-control" type="text" id="observacion" name="Observacion" value="@Model.Observacion">
+                    <input class="form-control" type="text" asp-for="Observacion" value="@Model.Observacion">
                 </div>
             </div>
 
             <div class="row mb-3">
-                <label class="col-sm-3 col-form-label" for="estado">Estado:</label>
+                <label class="col-sm-3 col-form-label" asp-for="Estado">Estado:</label>
                 <div class="col-sm-6">
-                    <input class="form-control" type="text" id="estado" name="Estado" value="@Model.Estado">
+                    <input class="form-control" type="text" asp-for="Estado" value="@Model.Estado">
                 </div>
             </div>
 
             <div class="row mb-3">
-                <label class="col-sm-3 col-form-label" for="cadete">Cadete:</label>
+                <label class="col-sm-3 col-form-label" asp-for="Cadete">Cadete:</label>
                 <div class="col-sm-6">
-                    <select class="form-select form-select-sm" name="Cadete" id="cadete">
+                    <select class="form-select form-select-sm" asp-for="Cadete">
                         @foreach (var cadete in Model.Cadetes)
                         {
                             @if (cadete.Id == @Model.Cadete)

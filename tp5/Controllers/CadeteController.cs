@@ -35,6 +35,11 @@ public class CadeteController : Controller
             var cadete = _mapper.Map<Cadete>(cadeteViewModel);
             _repositorio.Insertar(cadete);
         }
+        else
+        {
+            var errores = ModelState.Values.SelectMany(x => x.Errors);
+            Console.WriteLine(errores);
+        }
 
         return RedirectToAction("Index");
     }
@@ -55,6 +60,11 @@ public class CadeteController : Controller
         {
             var cadete = _mapper.Map<Cadete>(cadeteViewModel);
             _repositorio.Actualizar(cadete);
+        }
+        else
+        {
+            var errores = ModelState.Values.SelectMany(x => x.Errors);
+            Console.WriteLine(errores);
         }
 
         return RedirectToAction("Index");
