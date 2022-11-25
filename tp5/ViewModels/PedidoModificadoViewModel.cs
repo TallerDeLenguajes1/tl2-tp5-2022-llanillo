@@ -6,7 +6,7 @@ public class PedidoModificadoViewModel
 
     [Required]
     [StringLength(200)]
-    [Display(Name = "Observación")]
+    [Display(Name = "Observacion")]
     public string Observacion { get; set; }
 
     [Required]

@@ -8,9 +8,9 @@ public class Cadete : Persona
     {
     }
 
-    public Cadete(int id, string nombre, string direccion, int telefono, int? cadeteria) : base(id, nombre, direccion,
+    public Cadete(int id, string nombre, string direccion, string telefono) : base(id, nombre, direccion,
         telefono)
     {
-        Cadeteria = cadeteria;
+        // Cadeteria = cadeteria;
     }
 }

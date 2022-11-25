@@ -6,7 +6,7 @@ public class Cliente : Persona
     {
     }
 
-    public Cliente(int id, string nombre, string direccion, int telefono) : base(id, nombre, direccion, telefono)
+    public Cliente(int id, string nombre, string direccion, string telefono) : base(id, nombre, direccion, telefono)
     {
     }
 }

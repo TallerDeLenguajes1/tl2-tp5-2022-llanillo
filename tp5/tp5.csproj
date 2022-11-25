@@ -9,6 +9,7 @@
     <ItemGroup>
         <PackageReference Include="AutoMapper" Version="12.0.0" />
         <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.2.0" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="7.0.0" />
         <Content Include="Db/CadeteriaDB.db">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -16,6 +17,10 @@
         <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.10" />
         <PackageReference Include="NLog" Version="5.0.5" />
         <!--        <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />-->
+    </ItemGroup>
+
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Views\Cadeteria\Index.cshtml" />
     </ItemGroup>
 
 </Project>

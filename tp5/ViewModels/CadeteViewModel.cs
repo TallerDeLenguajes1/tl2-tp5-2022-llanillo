@@ -12,7 +12,7 @@ public class CadeteViewModel
 
     [Required]
     [Display(Name = "Teléfono")]
-    public int Telefono { get; set; }
+    public string Telefono { get; set; }
 
     public int Cadeteria { get; set; }
 
@@ -20,7 +20,7 @@ public class CadeteViewModel
     {
     }
 
-    public CadeteViewModel(int id, string nombre, string direccion, int telefono, int cadeteria)
+    public CadeteViewModel(int id, string nombre, string direccion, string telefono, int cadeteria)
     {
         Id = id;
         Nombre = nombre;

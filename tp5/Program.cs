@@ -1,4 +1,3 @@
-global using static tp5.Util.CsvHelper;
 global using tp5.Repositories;
 global using tp5.Models;
 global using tp5.ViewModels;

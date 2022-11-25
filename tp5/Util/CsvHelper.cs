@@ -31,7 +31,7 @@ public static class CsvHelper
                     Id = Convert.ToInt32(lineaSeparada[0]),
                     Nombre = lineaSeparada[1],
                     Direccion = lineaSeparada[2],
-                    Telefono = Convert.ToInt32(lineaSeparada[3])
+                    Telefono = lineaSeparada[3]
                 };
                 salida.Add(cadete);
             }

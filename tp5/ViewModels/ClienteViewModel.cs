@@ -16,11 +16,11 @@ public class ClienteViewModel
 
     [Required]
     [Display(Name = "Teléfono")]
-    public int Telefono { get; set; }
+    public string Telefono { get; set; }
 
     public ClienteViewModel() { }
 
-    public ClienteViewModel(int id, string nombre, string direccion, int telefono)
+    public ClienteViewModel(int id, string nombre, string direccion, string telefono)
     {
         Id = id;
         Nombre = nombre;

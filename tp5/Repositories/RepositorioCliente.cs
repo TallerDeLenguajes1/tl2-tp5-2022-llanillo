@@ -8,7 +8,7 @@ public class RepositorioCliente : Repositorio<Cliente>
 
     public override Cliente? BuscarPorId(int id)
     {
-        const string consulta = "select * from cliente C where C.id = @id";
+        const string consulta = "select * from Cliente where id_cliente = @id";
 
         try
         {
@@ -20,7 +20,7 @@ public class RepositorioCliente : Repositorio<Cliente>
             var salida = new Cliente();
             using var reader = peticion.ExecuteReader();
             while (reader.Read())
-                salida = new Cliente(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetInt32(3));
+                salida = new Cliente(reader.GetInt32(0), reader.GetString(1), reader.GetString(2), reader.GetString(3));
 
             conexion.Close();
             return salida;
@@ -35,7 +35,7 @@ public class RepositorioCliente : Repositorio<Cliente>
 
     public override IEnumerable<Cliente> BuscarTodos()
     {
-        const string consulta = "select * from cliente C";
+        const string consulta = "select * from Cliente";
 
         try
         {
@@ -48,7 +48,7 @@ public class RepositorioCliente : Repositorio<Cliente>
             while (reader.Read())
             {
                 var cliente = new Cliente(reader.GetInt32(0), reader.GetString(1), reader.GetString(2),
-                    reader.GetInt32(3));
+                    reader.GetString(3));
                 salida.Add(cliente);
             }
 
@@ -66,15 +66,17 @@ public class RepositorioCliente : Repositorio<Cliente>
     public override void Insertar(Cliente entidad)
     {
         const string consulta =
-            "insert into cliente (nombre, direccion, telefono) values (@nombre, @direccion, @telefono)";
+            "insert into Cliente (nombre, direccion, telefono) values (@nombre,@direccion,@telefono)";
         try
         {
             using var conexion = new SqliteConnection(CadenaConexion);
             var peticion = new SqliteCommand(consulta, conexion);
+            conexion.Open();
+            
             peticion.Parameters.AddWithValue("@nombre", entidad.Nombre);
             peticion.Parameters.AddWithValue("@direccion", entidad.Direccion);
             peticion.Parameters.AddWithValue("@telefono", entidad.Telefono);
-            peticion.ExecuteReader();
+            peticion.ExecuteNonQuery();
             conexion.Close();
         }
         catch (Exception e)
@@ -86,7 +88,7 @@ public class RepositorioCliente : Repositorio<Cliente>
     public override void Actualizar(Cliente entidad)
     {
         const string consulta =
-            "update cliente SET nombre = @nombre, direccion = @direccion, telefono = @telefono where id = @id";
+            "update Cliente set nombre = @nombre, direccion = @direccion, telefono = @telefono where id_cliente = @id";
         try
         {
             using var conexion = new SqliteConnection(CadenaConexion);
@@ -109,7 +111,7 @@ public class RepositorioCliente : Repositorio<Cliente>
     public override void Eliminar(int id)
     {
         const string consulta =
-            "delete from cliente C where C.id_cadete = @id";
+            "delete from Cliente where id_cliente = @id";
 
         try
         {

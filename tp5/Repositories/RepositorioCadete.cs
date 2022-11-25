@@ -10,7 +10,7 @@ public class RepositorioCadete : Repositorio<Cadete>
 
     public override Cadete? BuscarPorId(int id)
     {
-        const string consulta = "select * from cadete C where C.id = @id";
+        const string consulta = "select * from Cadete where id_cadete = @id";
 
         try
         {
@@ -21,13 +21,14 @@ public class RepositorioCadete : Repositorio<Cadete>
 
             var salida = new Cadete();
             using var reader = peticion.ExecuteReader();
+
             while (reader.Read())
                 salida = new Cadete
                 {
                     Id = reader.GetInt32(0), Nombre = reader.GetString(1),
                     Direccion = reader.GetString(2),
-                    Telefono = reader.GetInt32(3),
-                    Cadeteria = reader.IsDBNull(4) ? null : reader.GetInt32(4)
+                    Telefono = reader.GetString(3),
+                    // Cadeteria = reader.IsDBNull(4) ? null : reader.GetInt32(4)
                 };
             conexion.Close();
             return salida;
@@ -42,7 +43,7 @@ public class RepositorioCadete : Repositorio<Cadete>
 
     public override IEnumerable<Cadete> BuscarTodos()
     {
-        const string consulta = "select * from cadete C";
+        const string consulta = "select * from Cadete";
 
         try
         {
@@ -52,14 +53,15 @@ public class RepositorioCadete : Repositorio<Cadete>
 
             var salida = new List<Cadete>();
             using var reader = peticion.ExecuteReader();
+
             while (reader.Read())
             {
                 var cadete = new Cadete
                 {
-                    Id = reader.GetInt32(0), Nombre = reader.GetString(1),
+                    Id = reader.GetInt32(0),
+                    Nombre = reader.GetString(1),
                     Direccion = reader.GetString(2),
-                    Telefono = reader.GetInt32(3),
-                    Cadeteria = reader.IsDBNull(4) ? null : reader.GetInt32(4)
+                    Telefono = reader.GetString(3)
                 };
                 salida.Add(cadete);
             }
@@ -78,16 +80,18 @@ public class RepositorioCadete : Repositorio<Cadete>
     public override void Insertar(Cadete entidad)
     {
         const string consulta =
-            "insert into cadete (nombre, direccion, telefono, id_cadeteria) values (@nombre, @direccion, @telefono, @cadeteria)";
+            "insert into Cadete (nombre, direccion, telefono) values (@nombre, @direccion, @telefono)";
         try
         {
             using var conexion = new SqliteConnection(CadenaConexion);
             var peticion = new SqliteCommand(consulta, conexion);
+            conexion.Open();
+            
             peticion.Parameters.AddWithValue("@nombre", entidad.Nombre);
             peticion.Parameters.AddWithValue("@direccion", entidad.Direccion);
             peticion.Parameters.AddWithValue("@telefono", entidad.Telefono);
-            peticion.Parameters.AddWithValue("@cadeteria", entidad.Cadeteria);
-            peticion.ExecuteReader();
+            // peticion.Parameters.AddWithValue("@cadeteria", entidad.Cadeteria);
+            peticion.ExecuteNonQuery();
             conexion.Close();
         }
         catch (Exception e)
@@ -99,7 +103,7 @@ public class RepositorioCadete : Repositorio<Cadete>
     public override void Actualizar(Cadete entidad)
     {
         const string consulta =
-            "update cadete SET nombre = @nombre, direccion = @direccion, telefono = @telefono where id = @id";
+            "update Cadete set nombre = @nombre, direccion = @direccion, telefono = @telefono where id_cadete = @id";
         try
         {
             using var conexion = new SqliteConnection(CadenaConexion);
@@ -122,7 +126,7 @@ public class RepositorioCadete : Repositorio<Cadete>
     public override void Eliminar(int id)
     {
         const string consulta =
-            "delete from cadete C where C.id_cadete = @id";
+            "delete from Cadete where id_cadete = @id";
 
         try
         {

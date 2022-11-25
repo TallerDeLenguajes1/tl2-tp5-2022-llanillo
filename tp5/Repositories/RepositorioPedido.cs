@@ -8,7 +8,7 @@ public class RepositorioPedido : Repositorio<Pedido>, IRepositorioPedido
 
     public override Pedido? BuscarPorId(int id)
     {
-        const string consulta = "select * from pedido P where P.id = @id";
+        const string consulta = "select * from Pedido where id_pedido = @id";
 
         try
         {
@@ -42,7 +42,7 @@ public class RepositorioPedido : Repositorio<Pedido>, IRepositorioPedido
 
     public override IEnumerable<Pedido> BuscarTodos()
     {
-        const string consulta = "select * from pedido P";
+        const string consulta = "select * from Pedido";
 
         try
         {
@@ -79,7 +79,7 @@ public class RepositorioPedido : Repositorio<Pedido>, IRepositorioPedido
     public override void Insertar(Pedido entidad)
     {
         const string consulta =
-            "insert into pedido (observacion, estado, cliente, cadete) values (@observacion, @estado, @cliente, @cadete)";
+            "insert into Pedido (observacion, estado, id_cadete, id_cliente) values (@observacion, @estado, @cadete, @cliente)";
         try
         {
             using var conexion = new SqliteConnection(CadenaConexion);
@@ -88,9 +88,9 @@ public class RepositorioPedido : Repositorio<Pedido>, IRepositorioPedido
 
             peticion.Parameters.AddWithValue("@observacion", entidad.Observacion);
             peticion.Parameters.AddWithValue("@estado", entidad.Estado);
-            peticion.Parameters.AddWithValue("@cliente", entidad.Cliente);
             peticion.Parameters.AddWithValue("@cadete", entidad.Cadete);
-            peticion.ExecuteReader();
+            peticion.Parameters.AddWithValue("@cliente", entidad.Cliente);
+            peticion.ExecuteNonQuery();
             conexion.Close();
         }
         catch (Exception e)
@@ -102,7 +102,7 @@ public class RepositorioPedido : Repositorio<Pedido>, IRepositorioPedido
     public override void Actualizar(Pedido entidad)
     {
         const string consulta =
-            "update pedido set observacion = @observacion, estado = @estado, id_cadete = @cadete, id_cliente = @cliente where id = @id";
+            "update Pedido set observacion = @observacion, estado = @estado, id_cadete = @cadete, id_cliente = @cliente where id_pedido = @id";
 
         try
         {
@@ -128,7 +128,7 @@ public class RepositorioPedido : Repositorio<Pedido>, IRepositorioPedido
     public override void Eliminar(int id)
     {
         const string consulta =
-            "delete from pedido P where P.id = @id";
+            "delete from Pedido where id_pedido = @id";
 
         try
         {
@@ -146,13 +146,13 @@ public class RepositorioPedido : Repositorio<Pedido>, IRepositorioPedido
 
     public IEnumerable<Pedido> BuscarTodosPorCliente(int id)
     {
-        const string consulta = "select * from pedido P where P.id_cliente = @id";
+        const string consulta = "select * from Pedido where id_cliente = @id";
         return BuscarTodosPorEntidad(id, consulta);
     }
 
     public IEnumerable<Pedido> BuscarTodosPorCadete(int id)
     {
-        const string consulta = "select * from pedido P where P.id_cadete = @id";
+        const string consulta = "select * from Pedido where id_cadete = @id";
         return BuscarTodosPorEntidad(id, consulta);
     }
 
