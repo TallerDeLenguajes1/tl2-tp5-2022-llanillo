@@ -12,17 +12,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddAutoMapper(typeof(Program));
-// builder.Services.AddMvc();
 builder.Services.AddLogging();
-// builder.Services.AddControllers();
 
-// var connectionString = builder.Configuration.GetConnectionString("ConnectionString");
-// if (connectionString is not null)
-// {
 builder.Services.AddTransient<IRepositorio<Cadete>, RepositorioCadete>();
 builder.Services.AddTransient<IRepositorioPedido, RepositorioPedido>();
 builder.Services.AddTransient<IRepositorio<Cliente>, RepositorioCliente>();
-// }
 
 var app = builder.Build();
 
