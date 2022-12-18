@@ -15,6 +15,9 @@ public class ClienteController : Controller
 
     public IActionResult Index()
     {
+        if (HttpContext.Session.GetInt32(SessionRol) != (int)Rol.Administrador)
+            return RedirectToAction("Index", "Home");
+            
         var clientes = _repositorio.BuscarTodos();
         var clientesViewModel = _mapper.Map<List<ClienteViewModel>>(clientes);
         return View(clientesViewModel);
@@ -23,12 +26,18 @@ public class ClienteController : Controller
     [HttpGet]
     public IActionResult AltaCliente()
     {
+        if (HttpContext.Session.GetInt32(SessionRol) != (int)Rol.Administrador)
+            return RedirectToAction("Index", "Home");
+            
         return View("AltaCliente");
     }
 
     [HttpPost]
     public IActionResult AltaCliente(ClienteViewModel clienteViewModel)
     {
+        if (HttpContext.Session.GetInt32(SessionRol) != (int)Rol.Administrador)
+            return RedirectToAction("Index", "Home");
+            
         if (ModelState.IsValid)
         {
             var cliente = _mapper.Map<Cliente>(clienteViewModel);
@@ -46,6 +55,9 @@ public class ClienteController : Controller
     [HttpGet]
     public IActionResult ModificarCliente(int id)
     {
+        if (HttpContext.Session.GetInt32(SessionRol) != (int)Rol.Administrador)
+            return RedirectToAction("Index", "Home");
+            
         var cliente = _repositorio.BuscarPorId(id);
         if (cliente is null) return RedirectToAction("Index");
         var clienteViewModel = _mapper.Map<ClienteViewModel>(cliente);
@@ -55,6 +67,9 @@ public class ClienteController : Controller
     [HttpPost]
     public IActionResult ModificarCliente(ClienteViewModel clienteViewModel)
     {
+        if (HttpContext.Session.GetInt32(SessionRol) != (int)Rol.Administrador)
+            return RedirectToAction("Index", "Home");
+            
         if (ModelState.IsValid)
         {
             var cliente = _mapper.Map<Cliente>(clienteViewModel);
@@ -72,6 +87,9 @@ public class ClienteController : Controller
     [HttpGet]
     public IActionResult BajaCliente(int id)
     {
+        if (HttpContext.Session.GetInt32(SessionRol) != (int)Rol.Administrador)
+            return RedirectToAction("Index", "Home");
+            
         _repositorio.Eliminar(id);
         return RedirectToAction("Index");
     }
@@ -79,6 +97,9 @@ public class ClienteController : Controller
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
+        if (HttpContext.Session.GetInt32(SessionRol) != (int)Rol.Administrador)
+            return RedirectToAction("Index", "Home");
+            
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
 }
