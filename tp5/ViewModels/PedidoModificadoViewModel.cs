@@ -18,15 +18,4 @@ public class PedidoModificadoViewModel
 
     public List<CadeteViewModel> Cadetes { get; set; }
 
-    public PedidoModificadoViewModel()
-    {
-    }
-
-    public PedidoModificadoViewModel(int id, string observacion, string estado, int cadete)
-    {
-        Id = id;
-        Observacion = observacion;
-        Estado = estado;
-        Cadete = cadete;
-    }
 }

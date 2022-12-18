@@ -16,16 +16,4 @@ public class CadeteViewModel
 
     public int Cadeteria { get; set; }
 
-    public CadeteViewModel()
-    {
-    }
-
-    public CadeteViewModel(int id, string nombre, string direccion, string telefono, int cadeteria)
-    {
-        Id = id;
-        Nombre = nombre;
-        Direccion = direccion;
-        Telefono = telefono;
-        Cadeteria = cadeteria;
-    }
 }

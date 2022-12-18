@@ -7,23 +7,23 @@
         <form asp-controller="Cliente" asp-action="AltaCliente" method="post">
 
             <div class="row mb-3">
-                <label class="col-sm-3 col-form-label" for="nombre">Nombre: </label>
+                <label class="col-sm-3 col-form-label" asp-for="Nombre">Nombre: </label>
                 <div class="col-sm-6">
-                    <input class="form-control" type="text" id="nombre" name="Nombre" placeholder="Escriba un nombre">
+                    <input class="form-control" type="text" asp-for="Nombre" placeholder="Escriba un nombre">
                 </div>
             </div>
 
             <div class="row mb-3">
-                <label class="col-sm-3 col-form-label" for="direccion">Dirección:</label>
+                <label class="col-sm-3 col-form-label" asp-for="Direccion">Dirección:</label>
                 <div class="col-sm-6">
-                    <input class="form-control" type="text" id="direccion" name="Direccion" placeholder="Escriba una dirección">
+                    <input class="form-control" type="text" asp-for="Direccion" placeholder="Escriba una dirección">
                 </div>
             </div>
 
             <div class="row mb-3">
-                <label class="col-sm-3 col-form-label" for="telefono">Teléfono</label>
+                <label class="col-sm-3 col-form-label" asp-for="Telefono">Teléfono</label>
                 <div class="col-sm-6">
-                    <input class="form-control" type="tel" id="telefono" name="Telefono" placeholder="Escriba un teléfono">
+                    <input class="form-control" type="tel" asp-for="Telefono" placeholder="Escriba un teléfono">
                 </div>
             </div>
 

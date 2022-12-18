@@ -16,15 +16,4 @@ public class PedidoViewModel
 
     [Required] public int Cliente { get; set; }
     [Required] public int Cadete { get; set; }
-    
-    public PedidoViewModel() { }
-
-    public PedidoViewModel(int id, string observacion, string estado, int cliente, int cadete)
-    {
-        Id = id;
-        Observacion = observacion;
-        Estado = estado;
-        Cliente = cliente;
-        Cadete = cadete;
-    }
 }

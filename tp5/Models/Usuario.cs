@@ -8,21 +8,21 @@ public class Usuario
     
     public string NombreUsuario { get; set; }
     
-    public string Contrasena { get; set; }
+    public string Clave { get; set; }
     
-    public string Rol { get; set; }
+    public Rol Rol { get; set; }
 
     public Usuario()
     {
         
     }
     
-    public Usuario(int id, string nombre, string nombreUsuario, string contrasena, string rol)
+    public Usuario(int id, string nombre, string nombreUsuario, string clave, Rol rol)
     {
         Id = id;
         Nombre = nombre;
         NombreUsuario = nombreUsuario;
-        Contrasena = contrasena;
+        Clave = clave;
         Rol = rol;
     }
 }

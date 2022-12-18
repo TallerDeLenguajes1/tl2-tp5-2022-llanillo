@@ -59,8 +59,8 @@ public class RepositorioPedido : Repositorio<Pedido>, IRepositorioPedido
                     Id = reader.GetInt32(0),
                     Observacion = reader.GetString(1),
                     Estado = reader.GetString(2),
-                    Cliente = reader.IsDBNull(3) ? null : reader.GetInt32(3),
-                    Cadete = reader.IsDBNull(4) ? null : reader.GetInt32(4)
+                    Cadete = reader.GetInt32(3),
+                    Cliente = reader.GetInt32(4)
                 };
                 salida.Add(pedido);
             }

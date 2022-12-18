@@ -1,8 +1,11 @@
+global using static tp5.Util.SessionUtil;
 global using tp5.Repositories;
 global using tp5.Models;
 global using tp5.ViewModels;
 global using AutoMapper;
 global using Microsoft.AspNetCore.Mvc;
+global using Microsoft.AspNetCore.Session;
+global using Microsoft.AspNetCore.Http;
 global using Microsoft.Data.Sqlite;
 global using System.Diagnostics;
 global using System.ComponentModel.DataAnnotations;
@@ -14,9 +17,20 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddLogging();
 
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+
+builder.Services.AddTransient<IRepositorioUsuario, RepositorioUsuario>();
 builder.Services.AddTransient<IRepositorio<Cadete>, RepositorioCadete>();
 builder.Services.AddTransient<IRepositorioPedido, RepositorioPedido>();
 builder.Services.AddTransient<IRepositorio<Cliente>, RepositorioCliente>();
+
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(3);
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
 
 var app = builder.Build();
 
@@ -34,6 +48,7 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+app.UseSession();
 
 app.MapControllerRoute(
     "default",

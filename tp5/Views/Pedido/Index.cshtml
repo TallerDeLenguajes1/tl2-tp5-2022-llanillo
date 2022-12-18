@@ -2,7 +2,7 @@
 
 <h2>Lista de Pedidos</h2>
 
-<a class="btn btn-primary btn-sm" href="/Pedido/AltaPedido">Crear nuevo pedido</a>
+<a class="btn btn-primary btn-sm" asp-controller="Pedido" asp-action="AltaPedido">Crear nuevo pedido</a>
 
 <section>
     <article>
@@ -28,8 +28,8 @@
                     <td>@pedido.Cliente</td>
                     <td>@pedido.Cadete</td>
                     <td>
-                        <a class="btn btn-primary btn-sm" href="/Pedido/ModificarPedido?id=@pedido.Id">Editar</a>
-                        <a class="btn btn-danger btn-sm" href="/Pedido/BajaPedido?id=@pedido.Id">Eliminar</a>
+                        <a class="btn btn-primary btn-sm" asp-controller="Pedido" asp-action="ModificarPedido" asp-route-id="@pedido.Id">Editar</a>
+                        <a class="btn btn-danger btn-sm" asp-controller="Pedido" asp-action="BajaPedido" asp-route-id="@pedido.Id">Eliminar</a>
                     </td>
                 </tr>
             }
