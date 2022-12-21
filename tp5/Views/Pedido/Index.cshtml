@@ -1,4 +1,5 @@
-﻿@model List<PedidoViewModel>
+﻿@inject IHttpContextAccessor HttpContextAccess
+@model List<PedidoViewModel>
 
 <h2>Lista de Pedidos</h2>
 
@@ -29,7 +30,13 @@
                     <td>@pedido.Cadete</td>
                     <td>
                         <a class="btn btn-primary btn-sm" asp-controller="Pedido" asp-action="ModificarPedido" asp-route-id="@pedido.Id">Editar</a>
-                        <a class="btn btn-danger btn-sm" asp-controller="Pedido" asp-action="BajaPedido" asp-route-id="@pedido.Id">Eliminar</a>
+                        @{
+                            var rolUsuario = @HttpContextAccess.HttpContext?.Session.GetInt32(SessionRol);
+                            if (rolUsuario == (int)Rol.Administrador)
+                            {
+                                <a class="btn btn-danger btn-sm" asp-controller="Pedido" asp-action="BajaPedido" asp-route-id="@pedido.Id">Eliminar</a>
+                            }
+                        }
                     </td>
                 </tr>
             }

@@ -16,6 +16,8 @@ public abstract class Repositorio<T> : IRepositorio<T>
     public abstract T? BuscarPorId(int id);
 
     public abstract IEnumerable<T> BuscarTodos();
+    
+    public abstract IEnumerable<T> BuscarTodosPorId(int id);
 
     public abstract void Insertar(T entidad);
 

@@ -63,6 +63,11 @@ public class RepositorioCliente : Repositorio<Cliente>
         return null;
     }
 
+    public override IEnumerable<Cliente> BuscarTodosPorId(int id)
+    {
+        throw new NotImplementedException();
+    }
+
     public override void Insertar(Cliente entidad)
     {
         const string consulta =

@@ -46,7 +46,7 @@ public class HomeController : Controller
     public IActionResult CerrarSesion()
     {
         HttpContext.Session.Clear();
-        return RedirectToAction("InicioSesion");
+        return RedirectToAction("Index");
     }
 
     public IActionResult Privacy()

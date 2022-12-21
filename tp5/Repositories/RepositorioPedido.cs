@@ -1,6 +1,6 @@
 ﻿namespace tp5.Repositories;
 
-public class RepositorioPedido : Repositorio<Pedido>, IRepositorioPedido
+public class RepositorioPedido : Repositorio<Pedido>
 {
     public RepositorioPedido(IConfiguration configuration) : base(configuration)
     {
@@ -25,8 +25,8 @@ public class RepositorioPedido : Repositorio<Pedido>, IRepositorioPedido
                     Id = reader.GetInt32(0),
                     Observacion = reader.GetString(1),
                     Estado = reader.GetString(2),
-                    Cliente = reader.IsDBNull(3) ? null : reader.GetInt32(3),
-                    Cadete = reader.IsDBNull(4) ? null : reader.GetInt32(4)
+                    Cadete = reader.IsDBNull(3) ? null : reader.GetInt32(3),
+                    Cliente = reader.IsDBNull(4) ? null : reader.GetInt32(4)
                 };
 
             conexion.Close();
@@ -144,20 +144,10 @@ public class RepositorioPedido : Repositorio<Pedido>, IRepositorioPedido
         }
     }
 
-    public IEnumerable<Pedido> BuscarTodosPorCliente(int id)
-    {
-        const string consulta = "select * from Pedido where id_cliente = @id";
-        return BuscarTodosPorEntidad(id, consulta);
-    }
-
-    public IEnumerable<Pedido> BuscarTodosPorCadete(int id)
+    public override IEnumerable<Pedido> BuscarTodosPorId(int id)
     {
         const string consulta = "select * from Pedido where id_cadete = @id";
-        return BuscarTodosPorEntidad(id, consulta);
-    }
-
-    private IEnumerable<Pedido> BuscarTodosPorEntidad(int id, string consulta)
-    {
+        
         try
         {
             using var conexion = new SqliteConnection(CadenaConexion);
@@ -174,8 +164,8 @@ public class RepositorioPedido : Repositorio<Pedido>, IRepositorioPedido
                     Id = reader.GetInt32(0),
                     Observacion = reader.GetString(1),
                     Estado = reader.GetString(2),
-                    Cliente = reader.IsDBNull(3) ? null : reader.GetInt32(3),
-                    Cadete = reader.IsDBNull(4) ? null : reader.GetInt32(4)
+                    Cadete = reader.IsDBNull(3) ? null : reader.GetInt32(3),
+                    Cliente = reader.IsDBNull(4) ? null : reader.GetInt32(4)
                 };
                 salida.Add(pedido);
             }

@@ -11,4 +11,6 @@ public interface IRepositorio<T>
     void Actualizar(T entidad);
 
     void Eliminar(int id);
+
+    IEnumerable<T> BuscarTodosPorId(int id);
 }

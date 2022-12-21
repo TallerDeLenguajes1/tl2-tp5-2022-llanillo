@@ -77,6 +77,11 @@ public class RepositorioCadete : Repositorio<Cadete>
         return new List<Cadete>();
     }
 
+    public override IEnumerable<Cadete> BuscarTodosPorId(int id)
+    {
+        throw new NotImplementedException();
+    }
+
     public override void Insertar(Cadete entidad)
     {
         const string consulta =
