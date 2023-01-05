@@ -1,4 +1,5 @@
-﻿@model PedidoAltaViewModel
+﻿@inject IHttpContextAccessor HttpContextAccess
+@model PedidoAltaViewModel
 
 <body>
 <header>
@@ -32,17 +33,27 @@
                 </div>
             </div>
 
-            <div class="row mb-3">
-                <label class="col-sm-3 col-form-label" asp-for="@Model.Cadetes">Cadete:</label>
-                <div class="col-sm-6">
-                    <select class="form-select form-select-sm" name="Cadete" id="cadete">
-                        @foreach (var cadete in Model.Cadetes)
-                        {
-                            <option value="@cadete.Id">@cadete.Nombre</option>
-                        }
-                    </select>
-                </div>
-            </div>
+            @{
+                var rolUsuario = @HttpContextAccess.HttpContext?.Session.GetInt32(SessionRol);
+                if (rolUsuario == (int)Rol.Administrador)
+                {
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label" asp-for="@Model.Cadetes">Cadete:</label>
+                        <div class="col-sm-6">
+                            <select class="form-select form-select-sm" name="Cadete" id="cadete">
+                                @foreach (var cadete in Model.Cadetes)
+                                {
+                                    <option value="@cadete.Id">@cadete.Nombre</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <input asp-for="Cadete" type="hidden" value="@HttpContextAccess.HttpContext?.Session.GetInt32(SessionId)"/>
+                }
+            }
 
             <div class="row mb-3">
                 <div class="offset-sm-3 col-sm-3 d-grid">

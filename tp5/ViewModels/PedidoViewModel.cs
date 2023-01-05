@@ -16,4 +16,7 @@ public class PedidoViewModel
 
     [Required] public int Cliente { get; set; }
     [Required] public int Cadete { get; set; }
+    
+    [Required] public String ClientStr { get; set; }
+    [Required] public String CadeteStr { get; set; }
 }
