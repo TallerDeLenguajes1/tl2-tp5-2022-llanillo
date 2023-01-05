@@ -28,25 +28,41 @@ public class HomeController : Controller
     [HttpPost]
     public IActionResult InicioSesion(InicioSesionViewModel inicioSesionViewModel)
     {
-        var usuario = _mapper.Map<Usuario>(inicioSesionViewModel);
-        usuario = _repositorio.Verificar(usuario);
+        try
+        {
+            var usuario = _mapper.Map<Usuario>(inicioSesionViewModel);
+            usuario = _repositorio.Verificar(usuario);
 
-        if (usuario is null) return RedirectToAction("Index");
-        if (usuario.Rol == Rol.Ninguno) return RedirectToAction("Index");
+            if (usuario is null) return RedirectToAction("Index");
+            if (usuario.Rol == Rol.Ninguno) return RedirectToAction("Index");
 
-        HttpContext.Session.SetInt32(SessionId, usuario.Id);
-        HttpContext.Session.SetString(SessionNombre, usuario.Nombre);
-        HttpContext.Session.SetString(SessionUsuario, usuario.NombreUsuario);
-        HttpContext.Session.SetInt32(SessionRol, (int)usuario.Rol);
+            HttpContext.Session.SetInt32(SessionId, usuario.Id);
+            HttpContext.Session.SetString(SessionNombre, usuario.Nombre);
+            HttpContext.Session.SetString(SessionUsuario, usuario.NombreUsuario);
+            HttpContext.Session.SetInt32(SessionRol, (int)usuario.Rol);
 
-        return RedirectToAction("Index", "Pedido");
+            return RedirectToAction("Index", "Pedido");
+        }
+        catch (Exception e)
+        {
+            _logger.LogError("Error al acceder el Inicio Sesión {Error}", e.Message);
+            return View("Error");
+        }
     }
 
     [HttpGet]
     public IActionResult CerrarSesion()
     {
-        HttpContext.Session.Clear();
-        return RedirectToAction("Index");
+        try
+        {
+            HttpContext.Session.Clear();
+            return RedirectToAction("Index");
+        }
+        catch (Exception e)
+        {
+            _logger.LogError("Error al acceder el Cerrar Sesión {Error}", e.Message);
+            return View("Error");
+        }
     }
 
     public IActionResult Privacy()

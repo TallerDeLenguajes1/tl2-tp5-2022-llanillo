@@ -21,114 +21,162 @@ public class PedidoController : Controller
     [HttpGet]
     public IActionResult Index()
     {
-        var sesionRol = (Rol)HttpContext.Session.GetInt32(SessionRol);
-
-        switch (sesionRol)
+        try
         {
-            case Rol.Administrador:
-                var pedidos = _repositorio.BuscarTodos();
-                var pedidosViewModel = _mapper.Map<List<PedidoViewModel>>(pedidos);
-                return View(pedidosViewModel);
-            case Rol.Cadete:
-                var idCadete = (int)HttpContext.Session.GetInt32(SessionId);
-                var pedidosDelCadete = _repositorio.BuscarTodosPorId(idCadete);
-                var pedidosCadeteViewModel = _mapper.Map<List<PedidoViewModel>>(pedidosDelCadete);
-                return View(pedidosCadeteViewModel);
-            case Rol.Ninguno:
-                return RedirectToAction("Index", "Home");
-        }
+            var sesionRol = (Rol)HttpContext.Session.GetInt32(SessionRol);
 
-        return RedirectToAction("Index", "Home");
+            switch (sesionRol)
+            {
+                case Rol.Administrador:
+                    var pedidos = _repositorio.BuscarTodos();
+                    var pedidosViewModel = _mapper.Map<List<PedidoViewModel>>(pedidos);
+                    return View(pedidosViewModel);
+                case Rol.Cadete:
+                    var idCadete = (int)HttpContext.Session.GetInt32(SessionId);
+                    var pedidosDelCadete = _repositorio.BuscarTodosPorId(idCadete);
+                    var pedidosCadeteViewModel = _mapper.Map<List<PedidoViewModel>>(pedidosDelCadete);
+                    return View(pedidosCadeteViewModel);
+                case Rol.Ninguno:
+                    return RedirectToAction("Index", "Home");
+            }
+
+            return RedirectToAction("Index", "Home");
+        }
+        catch (Exception e)
+        {
+            _logger.LogError("Error al acceder el Index {Error}", e.Message);
+            return View("Error");
+        }
     }
 
     [HttpGet]
     public IActionResult AltaPedido()
     {
-        var sesionRol = HttpContext.Session.GetInt32(SessionRol);
-        if (sesionRol != (int)Rol.Administrador && sesionRol != (int)Rol.Cadete)
-            return RedirectToAction("Index", "Home");
+        try
+        {
+            var sesionRol = HttpContext.Session.GetInt32(SessionRol);
+            if (sesionRol != (int)Rol.Administrador && sesionRol != (int)Rol.Cadete)
+                return RedirectToAction("Index", "Home");
 
-        var cadetes = _repositorioCadete.BuscarTodos();
-        var clientes = _repositorioCliente.BuscarTodos();
-        var cadetesViewModel = _mapper.Map<List<CadeteViewModel>>(cadetes);
-        var clientesViewModel = _mapper.Map<List<ClienteViewModel>>(clientes);
-        var pedidoAltaViewModel = new PedidoAltaViewModel(cadetesViewModel, clientesViewModel);
-        return View(pedidoAltaViewModel);
+            var cadetes = _repositorioCadete.BuscarTodos();
+            var clientes = _repositorioCliente.BuscarTodos();
+            var cadetesViewModel = _mapper.Map<List<CadeteViewModel>>(cadetes);
+            var clientesViewModel = _mapper.Map<List<ClienteViewModel>>(clientes);
+            var pedidoAltaViewModel = new PedidoAltaViewModel(cadetesViewModel, clientesViewModel);
+            return View(pedidoAltaViewModel);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError("Error al acceder el Alta Pedido {Error}", e.Message);
+            return View("Error");
+        }
     }
 
     [HttpPost]
     public IActionResult AltaPedido(PedidoViewModel pedidoViewModel)
     {
-        var sesionRol = HttpContext.Session.GetInt32(SessionRol);
-        if (sesionRol != (int)Rol.Administrador && sesionRol != (int)Rol.Cadete)
-            return RedirectToAction("Index", "Home");
-
-        if (ModelState.IsValid)
+        try
         {
-            var pedido = _mapper.Map<Pedido>(pedidoViewModel);
-            _repositorio.Insertar(pedido);
-        }
-        else
-        {
-            var errores = ModelState.Values.SelectMany(x => x.Errors);
-            Console.WriteLine(errores);
-        }
+            var sesionRol = HttpContext.Session.GetInt32(SessionRol);
+            if (sesionRol != (int)Rol.Administrador && sesionRol != (int)Rol.Cadete)
+                return RedirectToAction("Index", "Home");
 
-        return RedirectToAction("Index");
+            if (ModelState.IsValid)
+            {
+                var pedido = _mapper.Map<Pedido>(pedidoViewModel);
+                _repositorio.Insertar(pedido);
+            }
+            else
+            {
+                var errores = ModelState.Values.SelectMany(x => x.Errors);
+                Console.WriteLine(errores);
+            }
+
+            return RedirectToAction("Index");
+        }
+        catch (Exception e)
+        {
+            _logger.LogError("Error al acceder el Alta Pedido {Error}", e.Message);
+            return View("Error");
+        }
     }
 
     [HttpGet]
     public IActionResult ModificarPedido(int id)
     {
-        var sesionRol = HttpContext.Session.GetInt32(SessionRol);
-        if (sesionRol != (int)Rol.Administrador && sesionRol != (int)Rol.Cadete)
-            return RedirectToAction("Index", "Home");
+        try
+        {
+            var sesionRol = HttpContext.Session.GetInt32(SessionRol);
+            if (sesionRol != (int)Rol.Administrador && sesionRol != (int)Rol.Cadete)
+                return RedirectToAction("Index", "Home");
 
-        var pedido = _repositorio.BuscarPorId(id);
+            var pedido = _repositorio.BuscarPorId(id);
 
-        var cadetes = _repositorioCadete.BuscarTodos();
-        var cadetesViewModel = _mapper.Map<List<CadeteViewModel>>(cadetes);
+            var cadetes = _repositorioCadete.BuscarTodos();
+            var cadetesViewModel = _mapper.Map<List<CadeteViewModel>>(cadetes);
 
-        var clientes = _repositorioCliente.BuscarTodos();
-        var clientesViewModel = _mapper.Map<List<ClienteViewModel>>(clientes);
-        
-        var pedidoModificadoViewModel = _mapper.Map<PedidoModificadoViewModel>(pedido);
-        pedidoModificadoViewModel.Cadetes = cadetesViewModel;
-        pedidoModificadoViewModel.Clientes = clientesViewModel;
+            var clientes = _repositorioCliente.BuscarTodos();
+            var clientesViewModel = _mapper.Map<List<ClienteViewModel>>(clientes);
 
-        return View(pedidoModificadoViewModel);
+            var pedidoModificadoViewModel = _mapper.Map<PedidoModificadoViewModel>(pedido);
+            pedidoModificadoViewModel.Cadetes = cadetesViewModel;
+            pedidoModificadoViewModel.Clientes = clientesViewModel;
+
+            return View(pedidoModificadoViewModel);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError("Error al acceder el Modificar Pedido {Error}", e.Message);
+            return View("Error");
+        }
     }
 
     [HttpPost]
     public IActionResult ModificarPedido(PedidoViewModel pedidoViewModel)
     {
-        var sesionRol = HttpContext.Session.GetInt32(SessionRol);
-        if (sesionRol != (int)Rol.Administrador && sesionRol != (int)Rol.Cadete)
-            return RedirectToAction("Index", "Home");
-
-        if (ModelState.IsValid)
+        try
         {
-            var pedido = _mapper.Map<Pedido>(pedidoViewModel);
-            _repositorio.Actualizar(pedido);
-        }
-        else
-        {
-            var errores = ModelState.Values.SelectMany(x => x.Errors);
-            Console.WriteLine(errores);
-        }
+            var sesionRol = HttpContext.Session.GetInt32(SessionRol);
+            if (sesionRol != (int)Rol.Administrador && sesionRol != (int)Rol.Cadete)
+                return RedirectToAction("Index", "Home");
 
-        return RedirectToAction("Index");
+            if (ModelState.IsValid)
+            {
+                var pedido = _mapper.Map<Pedido>(pedidoViewModel);
+                _repositorio.Actualizar(pedido);
+            }
+            else
+            {
+                var errores = ModelState.Values.SelectMany(x => x.Errors);
+                Console.WriteLine(errores);
+            }
+
+            return RedirectToAction("Index");
+        }
+        catch (Exception e)
+        {
+            _logger.LogError("Error al acceder el Modificar Pedido {Error}", e.Message);
+            return View("Error");
+        }
     }
 
     [HttpGet]
     public IActionResult BajaPedido(int id)
     {
-        var sesionRol = HttpContext.Session.GetInt32(SessionRol);
-        if (sesionRol != (int)Rol.Administrador && sesionRol != (int)Rol.Cadete)
-            return RedirectToAction("Index", "Home");
+        try
+        {
+            var sesionRol = HttpContext.Session.GetInt32(SessionRol);
+            if (sesionRol != (int)Rol.Administrador && sesionRol != (int)Rol.Cadete)
+                return RedirectToAction("Index", "Home");
 
-        _repositorio.Eliminar(id);
-        return RedirectToAction("Index");
+            _repositorio.Eliminar(id);
+            return RedirectToAction("Index");
+        }
+        catch (Exception e)
+        {
+            _logger.LogError("Error al acceder el Baja Pedido {Error}", e.Message);
+            return View("Error");
+        }
     }
 
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

@@ -1,5 +1,5 @@
-mostrar nombres en vez de ids
-agregar try catchs en controladores
-quitar selección de cadete en creación de pedido al hacerlo como cadete
-unir tabal de usuario y cadete
-no mostrar los ids en las tablas
+- Mostrar nombres en vez de ids
+- [LISTO] - Agregar try catchs en controladores
+- Quitar selección de cadete en creación de pedido al hacerlo como cadete
+- Unir tabla de usuario y cadete
+- No mostrar los ids en las tablas
