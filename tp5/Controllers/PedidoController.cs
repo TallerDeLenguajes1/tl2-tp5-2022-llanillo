@@ -30,6 +30,16 @@ public class PedidoController : Controller
                 case Rol.Administrador:
                     var pedidos = _repositorio.BuscarTodos();
                     var pedidosViewModel = _mapper.Map<List<PedidoViewModel>>(pedidos);
+
+                    foreach (var pedido in pedidosViewModel)
+                    {
+                        int clienteId = int.Parse(pedido.Cliente);
+                        int cadeteId = int.Parse(pedido.Cadete);
+                        
+                        pedido.Cliente = _repositorioCliente.BuscarPorId(clienteId)?.Nombre;
+                        pedido.Cadete = _repositorioCliente.BuscarPorId(cadeteId)?.Nombre;
+                    }
+
                     return View(pedidosViewModel);
                 case Rol.Cadete:
                     var idCadete = (int)HttpContext.Session.GetInt32(SessionId);

@@ -14,9 +14,7 @@ public class PedidoViewModel
     [Display(Name = "Estado")]
     public string Estado { get; set; }
 
-    [Required] public int Cliente { get; set; }
-    [Required] public int Cadete { get; set; }
+    [Required] public String Cliente { get; set; }
     
-    [Required] public String ClientStr { get; set; }
-    [Required] public String CadeteStr { get; set; }
+    [Required] public String Cadete { get; set; }
 }
