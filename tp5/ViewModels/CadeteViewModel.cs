@@ -15,5 +15,4 @@ public class CadeteViewModel
     public string Telefono { get; set; }
 
     public int Cadeteria { get; set; }
-
 }

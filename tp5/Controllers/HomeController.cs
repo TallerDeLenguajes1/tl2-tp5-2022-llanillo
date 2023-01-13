@@ -8,8 +8,8 @@ public class HomeController : Controller
     private const string SessionRol = "Rol";
 
     private readonly ILogger<HomeController> _logger;
-    private readonly IRepositorioUsuario _repositorio;
     private readonly IMapper _mapper;
+    private readonly IRepositorioUsuario _repositorio;
 
     public HomeController(ILogger<HomeController> logger, IMapper mapper, IRepositorioUsuario repositorio)
     {

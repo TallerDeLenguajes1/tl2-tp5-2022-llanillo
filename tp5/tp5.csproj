@@ -20,7 +20,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <_ContentIncludedByDefault Remove="Views\Cadeteria\Index.cshtml" />
+        <_ContentIncludedByDefault Remove="Views\Cadeteria\Index.cshtml" />
     </ItemGroup>
 
 </Project>

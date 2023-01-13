@@ -3,8 +3,8 @@ namespace tp5.Controllers;
 public class CadeteController : Controller
 {
     private readonly ILogger<CadeteController> _logger;
-    private readonly IRepositorio<Cadete> _repositorio;
     private readonly IMapper _mapper;
+    private readonly IRepositorio<Cadete> _repositorio;
 
     public CadeteController(ILogger<CadeteController> logger, IRepositorio<Cadete> repositorio, IMapper mapper)
     {

@@ -3,7 +3,7 @@
 public abstract class Repositorio<T> : IRepositorio<T>
 {
     protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-    
+
     private readonly IConfiguration _configuration;
     protected readonly string? CadenaConexion;
 
@@ -16,7 +16,7 @@ public abstract class Repositorio<T> : IRepositorio<T>
     public abstract T? BuscarPorId(int id);
 
     public abstract IEnumerable<T> BuscarTodos();
-    
+
     public abstract IEnumerable<T> BuscarTodosPorId(int id);
 
     public abstract void Insertar(T entidad);

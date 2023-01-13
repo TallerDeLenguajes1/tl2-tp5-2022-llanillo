@@ -147,7 +147,7 @@ public class RepositorioPedido : Repositorio<Pedido>
     public override IEnumerable<Pedido> BuscarTodosPorId(int id)
     {
         const string consulta = "select * from Pedido where id_cadete = @id";
-        
+
         try
         {
             using var conexion = new SqliteConnection(CadenaConexion);

@@ -28,7 +28,6 @@ public class RepositorioUsuario : IRepositorioUsuario
             var salida = new Usuario();
 
             while (reader.Read())
-            {
                 salida = new Usuario
                 {
                     Id = reader.GetInt32(0),
@@ -36,8 +35,9 @@ public class RepositorioUsuario : IRepositorioUsuario
                     NombreUsuario = reader.GetString(2),
                     Clave = reader.GetString(3),
                     Rol = (Rol)reader.GetInt32(4),
+                    Direccion = reader.GetString(5),
+                    Telefono = reader.GetString(6)
                 };
-            }
 
             conexion.Close();
             return salida;

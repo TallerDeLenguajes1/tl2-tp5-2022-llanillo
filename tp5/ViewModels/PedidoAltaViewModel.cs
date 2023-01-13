@@ -2,6 +2,16 @@
 
 public class PedidoAltaViewModel
 {
+    public readonly List<CadeteViewModel> Cadetes;
+
+    public readonly List<ClienteViewModel> Clientes;
+
+    public PedidoAltaViewModel(List<CadeteViewModel> cadetes, List<ClienteViewModel> clientes)
+    {
+        Cadetes = cadetes;
+        Clientes = clientes;
+    }
+
     [StringLength(200)]
     [Display(Name = "Observacion")]
     public string Observacion { get; set; }
@@ -13,14 +23,4 @@ public class PedidoAltaViewModel
 
     [Required] public int Cliente { get; set; }
     [Required] public int Cadete { get; set; }
-
-    public readonly List<CadeteViewModel> Cadetes;
-
-    public readonly List<ClienteViewModel> Clientes;
-
-    public PedidoAltaViewModel(List<CadeteViewModel> cadetes, List<ClienteViewModel> clientes)
-    {
-        Cadetes = cadetes;
-        Clientes = clientes;
-    }
 }

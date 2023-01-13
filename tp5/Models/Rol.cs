@@ -3,6 +3,7 @@
 public enum Rol : uint
 {
     Cadete,
+    Cliente,
     Administrador,
     Ninguno
 }

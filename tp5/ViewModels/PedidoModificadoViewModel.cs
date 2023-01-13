@@ -19,5 +19,4 @@ public class PedidoModificadoViewModel
 
     public List<CadeteViewModel> Cadetes { get; set; }
     public List<ClienteViewModel> Clientes { get; set; }
-
 }

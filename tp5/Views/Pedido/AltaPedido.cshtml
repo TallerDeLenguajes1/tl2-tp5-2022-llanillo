@@ -34,7 +34,7 @@
             </div>
 
             @{
-                var rolUsuario = @HttpContextAccess.HttpContext?.Session.GetInt32(SessionRol);
+                var rolUsuario = HttpContextAccess.HttpContext?.Session.GetInt32(SessionRol);
                 if (rolUsuario == (int)Rol.Administrador)
                 {
                     <div class="row mb-3">

@@ -5,6 +5,10 @@
 
 <a class="btn btn-primary btn-sm" asp-controller="Pedido" asp-action="AltaPedido">Crear nuevo pedido</a>
 
+@{
+    var rolUsuario = HttpContextAccess.HttpContext?.Session.GetInt32(SessionRol);
+
+}
 <section>
     <article>
         <table class="table table-bordered table-striped">
@@ -13,8 +17,19 @@
                 <th>Id</th>
                 <th>Observación</th>
                 <th>Estado</th>
-                <th>Cliente</th>
-                <th>Cadete</th>
+                @{
+                    if (rolUsuario != (int)Rol.Cliente)
+                    {
+                        <th>Cliente</th>
+                    }
+                }
+
+                @{
+                    if (rolUsuario != (int)Rol.Cadete)
+                    {
+                        <th>Cadete</th>
+                    }
+                }
                 <th>Acciones</th>
             </tr>
             </thead>
@@ -26,12 +41,22 @@
                     <td>@pedido.Id</td>
                     <td>@pedido.Observacion</td>
                     <td>@pedido.Estado</td>
-                    <td>@pedido.Cliente</td>
-                    <td>@pedido.Cadete</td>
+                    @{
+                        if (rolUsuario != (int)Rol.Cliente)
+                        {
+                            <td>@pedido.Cliente</td>
+                        }
+                    }
+
+                    @{
+                        if (rolUsuario != (int)Rol.Cadete)
+                        {
+                            <td>@pedido.Cadete</td>
+                        }
+                    }
                     <td>
                         <a class="btn btn-primary btn-sm" asp-controller="Pedido" asp-action="ModificarPedido" asp-route-id="@pedido.Id">Editar</a>
                         @{
-                            var rolUsuario = @HttpContextAccess.HttpContext?.Session.GetInt32(SessionRol);
                             if (rolUsuario == (int)Rol.Administrador)
                             {
                                 <a class="btn btn-danger btn-sm" asp-controller="Pedido" asp-action="BajaPedido" asp-route-id="@pedido.Id">Eliminar</a>

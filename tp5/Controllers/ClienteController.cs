@@ -3,8 +3,8 @@ namespace tp5.Controllers;
 public class ClienteController : Controller
 {
     private readonly ILogger<ClienteController> _logger;
-    private readonly IRepositorio<Cliente> _repositorio;
     private readonly IMapper _mapper;
+    private readonly IRepositorio<Cliente> _repositorio;
 
     public ClienteController(ILogger<ClienteController> logger, IRepositorio<Cliente> repositorio, IMapper mapper)
     {
