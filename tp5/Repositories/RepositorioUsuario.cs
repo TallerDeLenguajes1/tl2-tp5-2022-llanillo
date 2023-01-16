@@ -49,4 +49,43 @@ public class RepositorioUsuario : IRepositorioUsuario
 
         return null;
     }
+
+    public IEnumerable<Usuario> BuscarTodos()
+    {
+        const string consulta = "select * from Usuario";
+
+        try
+        {
+            using var conexion = new SqliteConnection(CadenaConexion);
+            var peticion = new SqliteCommand(consulta, conexion);
+            conexion.Open();
+
+            var salida = new List<Usuario>();
+            using var reader = peticion.ExecuteReader();
+            while (reader.Read())
+            {
+                var usuario = new Usuario
+                {
+                    Id = reader.GetInt32(0),
+                    Nombre = reader.GetString(1),
+                    NombreUsuario = reader.GetString(2),
+                    Clave = reader.GetString(3),
+                    Rol = (Rol)reader.GetInt32(4),
+                    Direccion = reader.GetString(5),
+                    Telefono = reader.GetString(6)
+                };
+
+                salida.Add(usuario);
+            }
+
+            conexion.Close();
+            return salida;
+        }
+        catch (Exception e)
+        {
+            Logger.Debug("Error al buscar todos los usuarios - {Error}", e.Message);
+        }
+
+        return null;
+    }
 }

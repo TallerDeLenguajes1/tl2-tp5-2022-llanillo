@@ -21,16 +21,28 @@ public class HomeController : Controller
     [HttpGet]
     public IActionResult Index()
     {
-        return View();
+        try
+        {
+            var inicioViewModel = new InicioViewModel();
+            var usuarios = _repositorio.BuscarTodos();
+            var usuariosViewModel = _mapper.Map <List<UsuarioViewModel>>(usuarios);
+            inicioViewModel.UsuarioViewModels = usuariosViewModel;
+            return View(inicioViewModel);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError("Error al acceder al Index {Error}", e.Message);
+            return View("Error");
+        }
     }
 
 
     [HttpPost]
-    public IActionResult InicioSesion(InicioSesionViewModel inicioSesionViewModel)
+    public IActionResult InicioSesion(InicioViewModel inicioViewModel)
     {
         try
         {
-            var usuario = _mapper.Map<Usuario>(inicioSesionViewModel);
+            var usuario = _mapper.Map<Usuario>(inicioViewModel.LoginViewModel);
             usuario = _repositorio.Verificar(usuario);
 
             if (usuario is null) return RedirectToAction("Index");

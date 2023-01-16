@@ -1,6 +1,6 @@
 ﻿namespace tp5.ViewModels;
 
-public class InicioSesionViewModel
+public class LoginViewModel
 {
     [Required]
     [StringLength(15, MinimumLength = 5)]

@@ -3,4 +3,6 @@
 public interface IRepositorioUsuario
 {
     Usuario? Verificar(Usuario usuario);
+
+    IEnumerable<Usuario> BuscarTodos();
 }
