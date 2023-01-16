@@ -8,7 +8,8 @@ public class RepositorioCadete : Repositorio<Cadete>
 
     public override Cadete? BuscarPorId(int id)
     {
-        const string consulta = "select * from Usuario where id_usuario = @id and rol = @rol";
+        // const string consulta = "select * from Usuario where id_usuario = @id and rol = @rol";
+        const string consulta = "select * from Usuario where id_usuario = @id";
 
         try
         {
