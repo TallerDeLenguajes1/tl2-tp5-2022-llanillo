@@ -63,8 +63,8 @@ public class RepositorioCadete : Repositorio<Cadete>
                 {
                     Id = reader.GetInt32(0),
                     Nombre = reader.GetString(1),
-                    Direccion = reader.GetString(2),
-                    Telefono = reader.GetString(3),
+                    Direccion = reader.GetString(5),
+                    Telefono = reader.GetString(6),
                     Rol = Rol.Cadete
                 };
                 salida.Add(cadete);

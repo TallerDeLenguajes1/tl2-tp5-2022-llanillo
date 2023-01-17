@@ -14,5 +14,12 @@ public class CadeteViewModel
     [Display(Name = "Teléfono")]
     public string Telefono { get; set; }
 
-    public int Cadeteria { get; set; }
+    [Required]
+    [StringLength(300)]
+    [Display(Name = "Usuario")]
+    public string NombreUsuario { get; set; }
+
+    [Required] [Display(Name = "Clave")] public string Clave { get; set; }
+    
+    [Required] [Display(Name = "Rol")] public Rol Rol { get; set; }
 }

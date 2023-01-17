@@ -6,6 +6,8 @@
         <h2>Registro de Cadetes</h2>
         <form asp-controller="Cadete" asp-action="AltaCadete" method="post">
 
+            <input asp-for="Rol" type="hidden" value="@Rol.Cadete"/>
+
             <div class="row mb-3">
                 <label class="col-sm-3 col-form-label" asp-for="Nombre">Nombre: </label>
                 <div class="col-sm-6">
@@ -24,6 +26,20 @@
                 <label class="col-sm-3 col-form-label" asp-for="Telefono">Teléfono</label>
                 <div class="col-sm-6">
                     <input class="form-control" type="tel" asp-for="Telefono" placeholder="Escriba un teléfono">
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-sm-3 col-form-label" asp-for="NombreUsuario">Nombre de usuario:</label>
+                <div class="col-sm-6">
+                    <input class="form-control" type="text" asp-for="NombreUsuario" placeholder="Escriba un nombre de usuario">
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <label class="col-sm-3 col-form-label" asp-for="Clave">Clave</label>
+                <div class="col-sm-6">
+                    <input class="form-control" type="password" asp-for="Clave" placeholder="Escriba una clave">
                 </div>
             </div>
 

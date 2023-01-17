@@ -26,8 +26,8 @@ public class RepositorioCliente : Repositorio<Cliente>
                 {
                     Id = reader.GetInt32(0),
                     Nombre = reader.GetString(1),
-                    Direccion = reader.GetString(2),
-                    Telefono = reader.GetString(3),
+                    Direccion = reader.GetString(5),
+                    Telefono = reader.GetString(6),
                     Rol = Rol.Cliente
                 };
 
@@ -61,8 +61,8 @@ public class RepositorioCliente : Repositorio<Cliente>
                 {
                     Id = reader.GetInt32(0),
                     Nombre = reader.GetString(1),
-                    Direccion = reader.GetString(2),
-                    Telefono = reader.GetString(3),
+                    Direccion = reader.GetString(5),
+                    Telefono = reader.GetString(6),
                     Rol = Rol.Cliente
                 };
 
@@ -100,6 +100,8 @@ public class RepositorioCliente : Repositorio<Cliente>
             peticion.Parameters.AddWithValue("@usuario", entidad.NombreUsuario);
             peticion.Parameters.AddWithValue("@clave", entidad.Clave);
             peticion.Parameters.AddWithValue("@rol", entidad.Rol);
+            peticion.Parameters.AddWithValue("@direccion", entidad.Direccion);
+            peticion.Parameters.AddWithValue("@telefono", entidad.Telefono);
             peticion.ExecuteNonQuery();
             conexion.Close();
         }
