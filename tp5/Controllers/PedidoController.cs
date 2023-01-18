@@ -91,8 +91,8 @@ public class PedidoController : Controller
             if (sesionRol != (int)Rol.Administrador && sesionRol != (int)Rol.Cadete)
                 return RedirectToAction("Index", "Home");
 
-            var cadetes = _repositorioUsuario.BuscarTodos();
-            var clientes = _repositorioUsuario.BuscarTodos();
+            var cadetes = _repositorioUsuario.BuscarTodosPorRol(Rol.Cadete);
+            var clientes = _repositorioUsuario.BuscarTodosPorRol(Rol.Cliente);
             var cadetesViewModel = _mapper.Map<List<UsuarioViewModel>>(cadetes);
             var clientesViewModel = _mapper.Map<List<UsuarioViewModel>>(clientes);
             var pedidoAltaViewModel = new PedidoAltaViewModel(cadetesViewModel, clientesViewModel);
@@ -145,10 +145,10 @@ public class PedidoController : Controller
 
             var pedido = _repositorioPedido.BuscarPorId(id);
 
-            var cadetes = _repositorioUsuario.BuscarTodos();
+            var cadetes = _repositorioUsuario.BuscarTodosPorRol(Rol.Cadete);
             var cadetesViewModel = _mapper.Map<List<UsuarioViewModel>>(cadetes);
 
-            var clientes = _repositorioUsuario.BuscarTodos();
+            var clientes = _repositorioUsuario.BuscarTodosPorRol(Rol.Cliente);
             var clientesViewModel = _mapper.Map<List<UsuarioViewModel>>(clientes);
 
             var pedidoModificadoViewModel = _mapper.Map<PedidoModificadoViewModel>(pedido);

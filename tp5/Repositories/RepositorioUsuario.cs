@@ -209,7 +209,7 @@ public class RepositorioUsuario : IRepositorioUsuario
         }
         catch (Exception e)
         {
-            Logger.Debug("Error al insertar el pedido {Id} - {Error}", entidad.Id, e.Message);
+            Logger.Debug("Error al actualizar el usuario  {Id} - {Error}", entidad.Id, e.Message);
         }
     }
 
@@ -222,13 +222,15 @@ public class RepositorioUsuario : IRepositorioUsuario
         {
             using var conexion = new SqliteConnection(CadenaConexion);
             var peticion = new SqliteCommand(consulta, conexion);
+            conexion.Open();
+            
             peticion.Parameters.AddWithValue("@id", id);
             peticion.ExecuteReader();
             conexion.Close();
         }
         catch (Exception e)
         {
-            Logger.Debug("Error al eliminar el cadete {Id} - {Error}", id, e.Message);
+            Logger.Debug("Error al eliminar el usuario {Id} - {Error}", id, e.Message);
         }
     }
 
