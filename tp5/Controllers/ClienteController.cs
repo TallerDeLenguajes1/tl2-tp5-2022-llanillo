@@ -4,12 +4,12 @@ public class ClienteController : Controller
 {
     private readonly ILogger<ClienteController> _logger;
     private readonly IMapper _mapper;
-    private readonly IRepositorio<Cliente> _repositorio;
+    private readonly IRepositorioUsuario _repositorioUsuario;
 
-    public ClienteController(ILogger<ClienteController> logger, IRepositorio<Cliente> repositorio, IMapper mapper)
+    public ClienteController(ILogger<ClienteController> logger, IRepositorioUsuario repositorioUsuario, IMapper mapper)
     {
         _logger = logger;
-        _repositorio = repositorio;
+        _repositorioUsuario = repositorioUsuario;
         _mapper = mapper;
     }
 
@@ -20,8 +20,8 @@ public class ClienteController : Controller
             if (HttpContext.Session.GetInt32(SessionRol) != (int)Rol.Administrador)
                 return RedirectToAction("Index", "Home");
 
-            var clientes = _repositorio.BuscarTodos();
-            var clientesViewModel = _mapper.Map<List<ClienteViewModel>>(clientes);
+            var clientes = _repositorioUsuario.BuscarTodosPorRol(Rol.Cliente);
+            var clientesViewModel = _mapper.Map<List<UsuarioViewModel>>(clientes);
             return View(clientesViewModel);
         }
         catch (Exception e)
@@ -49,7 +49,7 @@ public class ClienteController : Controller
     }
 
     [HttpPost]
-    public IActionResult AltaCliente(ClienteViewModel clienteViewModel)
+    public IActionResult AltaCliente(UsuarioViewModel clienteViewModel)
     {
         try
         {
@@ -58,8 +58,8 @@ public class ClienteController : Controller
 
             if (ModelState.IsValid)
             {
-                var cliente = _mapper.Map<Cliente>(clienteViewModel);
-                _repositorio.Insertar(cliente);
+                var cliente = _mapper.Map<Usuario>(clienteViewModel);
+                _repositorioUsuario.Insertar(cliente);
             }
             else
             {
@@ -84,9 +84,9 @@ public class ClienteController : Controller
             if (HttpContext.Session.GetInt32(SessionRol) != (int)Rol.Administrador)
                 return RedirectToAction("Index", "Home");
 
-            var cliente = _repositorio.BuscarPorId(id);
+            var cliente = _repositorioUsuario.BuscarPorId(id);
             if (cliente is null) return RedirectToAction("Index");
-            var clienteViewModel = _mapper.Map<ClienteViewModel>(cliente);
+            var clienteViewModel = _mapper.Map<UsuarioViewModel>(cliente);
             return View(clienteViewModel);
         }
         catch (Exception e)
@@ -97,7 +97,7 @@ public class ClienteController : Controller
     }
 
     [HttpPost]
-    public IActionResult ModificarCliente(ClienteViewModel clienteViewModel)
+    public IActionResult ModificarCliente(UsuarioViewModel clienteViewModel)
     {
         try
         {
@@ -106,8 +106,8 @@ public class ClienteController : Controller
 
             if (ModelState.IsValid)
             {
-                var cliente = _mapper.Map<Cliente>(clienteViewModel);
-                _repositorio.Actualizar(cliente);
+                var cliente = _mapper.Map<Usuario>(clienteViewModel);
+                _repositorioUsuario.Actualizar(cliente);
             }
             else
             {
@@ -132,7 +132,7 @@ public class ClienteController : Controller
             if (HttpContext.Session.GetInt32(SessionRol) != (int)Rol.Administrador)
                 return RedirectToAction("Index", "Home");
 
-            _repositorio.Eliminar(id);
+            _repositorioUsuario.Eliminar(id);
             return RedirectToAction("Index");
         }
         catch (Exception e)

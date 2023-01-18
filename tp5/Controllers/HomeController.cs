@@ -9,13 +9,13 @@ public class HomeController : Controller
 
     private readonly ILogger<HomeController> _logger;
     private readonly IMapper _mapper;
-    private readonly IRepositorioUsuario _repositorio;
+    private readonly IRepositorioUsuario _repositorioUsuario;
 
-    public HomeController(ILogger<HomeController> logger, IMapper mapper, IRepositorioUsuario repositorio)
+    public HomeController(ILogger<HomeController> logger, IMapper mapper, IRepositorioUsuario repositorioUsuario)
     {
         _logger = logger;
         _mapper = mapper;
-        _repositorio = repositorio;
+        _repositorioUsuario = repositorioUsuario;
     }
 
     [HttpGet]
@@ -24,7 +24,7 @@ public class HomeController : Controller
         try
         {
             var inicioViewModel = new InicioViewModel();
-            var usuarios = _repositorio.BuscarTodos();
+            var usuarios = _repositorioUsuario.BuscarTodos();
             var usuariosViewModel = _mapper.Map <List<UsuarioViewModel>>(usuarios);
             inicioViewModel.UsuarioViewModels = usuariosViewModel;
             return View(inicioViewModel);
@@ -43,7 +43,7 @@ public class HomeController : Controller
         try
         {
             var usuario = _mapper.Map<Usuario>(inicioViewModel.LoginViewModel);
-            usuario = _repositorio.Verificar(usuario);
+            usuario = _repositorioUsuario.Verificar(usuario);
 
             if (usuario is null) return RedirectToAction("Index");
             if (usuario.Rol == Rol.Ninguno) return RedirectToAction("Index");

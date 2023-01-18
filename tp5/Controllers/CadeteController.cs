@@ -4,12 +4,12 @@ public class CadeteController : Controller
 {
     private readonly ILogger<CadeteController> _logger;
     private readonly IMapper _mapper;
-    private readonly IRepositorio<Cadete> _repositorio;
+    private readonly IRepositorioUsuario _repositorioUsuario;
 
-    public CadeteController(ILogger<CadeteController> logger, IRepositorio<Cadete> repositorio, IMapper mapper)
+    public CadeteController(ILogger<CadeteController> logger, IRepositorioUsuario repositorioUsuario, IMapper mapper)
     {
         _logger = logger;
-        _repositorio = repositorio;
+        _repositorioUsuario = repositorioUsuario;
         _mapper = mapper;
     }
 
@@ -20,8 +20,8 @@ public class CadeteController : Controller
             if (HttpContext.Session.GetInt32(SessionRol) != (int)Rol.Administrador)
                 return RedirectToAction("Index", "Home");
 
-            var cadetes = _repositorio.BuscarTodos();
-            var cadetesViewModel = _mapper.Map<List<CadeteViewModel>>(cadetes);
+            var cadetes = _repositorioUsuario.BuscarTodosPorRol(Rol.Cadete);
+            var cadetesViewModel = _mapper.Map<List<UsuarioViewModel>>(cadetes);
             return View(cadetesViewModel);
         }
         catch (Exception e)
@@ -48,7 +48,7 @@ public class CadeteController : Controller
     }
 
     [HttpPost]
-    public IActionResult AltaCadete(CadeteViewModel cadeteViewModel)
+    public IActionResult AltaCadete(UsuarioViewModel cadeteViewModel)
     {
         try
         {
@@ -57,8 +57,8 @@ public class CadeteController : Controller
 
             if (ModelState.IsValid)
             {
-                var cadete = _mapper.Map<Cadete>(cadeteViewModel);
-                _repositorio.Insertar(cadete);
+                var cadete = _mapper.Map<Usuario>(cadeteViewModel);
+                _repositorioUsuario.Insertar(cadete);
             }
             else
             {
@@ -83,9 +83,9 @@ public class CadeteController : Controller
             if (HttpContext.Session.GetInt32(SessionRol) != (int)Rol.Administrador)
                 return RedirectToAction("Index", "Home");
 
-            var cadete = _repositorio.BuscarPorId(id);
+            var cadete = _repositorioUsuario.BuscarPorId(id);
             if (cadete is null) return RedirectToAction("Index");
-            var cadeteViewModel = _mapper.Map<CadeteViewModel>(cadete);
+            var cadeteViewModel = _mapper.Map<UsuarioViewModel>(cadete);
             return View(cadeteViewModel);
         }
         catch (Exception e)
@@ -96,7 +96,7 @@ public class CadeteController : Controller
     }
 
     [HttpPost]
-    public IActionResult ModificarCadete(CadeteViewModel cadeteViewModel)
+    public IActionResult ModificarCadete(UsuarioViewModel cadeteViewModel)
     {
         try
         {
@@ -105,8 +105,8 @@ public class CadeteController : Controller
 
             if (ModelState.IsValid)
             {
-                var cadete = _mapper.Map<Cadete>(cadeteViewModel);
-                _repositorio.Actualizar(cadete);
+                var cadete = _mapper.Map<Usuario>(cadeteViewModel);
+                _repositorioUsuario.Actualizar(cadete);
             }
             else
             {
@@ -131,7 +131,7 @@ public class CadeteController : Controller
             if (HttpContext.Session.GetInt32(SessionRol) != (int)Rol.Administrador)
                 return RedirectToAction("Index", "Home");
 
-            _repositorio.Eliminar(id);
+            _repositorioUsuario.Eliminar(id);
             return RedirectToAction("Index");
         }
         catch (Exception e)

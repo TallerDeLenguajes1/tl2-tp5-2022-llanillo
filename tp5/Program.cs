@@ -2,6 +2,7 @@ global using static tp5.Util.SessionUtil;
 global using tp5.Repositories;
 global using tp5.Models;
 global using tp5.ViewModels;
+global using NLog;
 global using AutoMapper;
 global using Microsoft.AspNetCore.Mvc;
 global using Microsoft.AspNetCore.Session;
@@ -20,9 +21,7 @@ builder.Services.AddLogging();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 builder.Services.AddTransient<IRepositorioUsuario, RepositorioUsuario>();
-builder.Services.AddTransient<IRepositorio<Cadete>, RepositorioCadete>();
 builder.Services.AddTransient<IRepositorio<Pedido>, RepositorioPedido>();
-builder.Services.AddTransient<IRepositorio<Cliente>, RepositorioCliente>();
 
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>

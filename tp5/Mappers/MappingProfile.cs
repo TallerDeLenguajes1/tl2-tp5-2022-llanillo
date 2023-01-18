@@ -6,8 +6,6 @@ public class MappingProfile : Profile
     {
         CreateMap<Usuario, UsuarioViewModel>().ReverseMap();
         CreateMap<Usuario, LoginViewModel>().ReverseMap();
-        CreateMap<Cadete, CadeteViewModel>().ReverseMap();
-        CreateMap<Cliente, ClienteViewModel>().ReverseMap();
         CreateMap<Pedido, PedidoViewModel>().ReverseMap();
         CreateMap<Pedido, PedidoAltaViewModel>().ReverseMap();
         CreateMap<Pedido, PedidoModificadoViewModel>().ReverseMap();

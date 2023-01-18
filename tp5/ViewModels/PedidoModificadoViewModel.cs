@@ -17,6 +17,6 @@ public class PedidoModificadoViewModel
     public int Cadete { get; set; }
     public int Cliente { get; set; }
 
-    public List<CadeteViewModel> Cadetes { get; set; }
-    public List<ClienteViewModel> Clientes { get; set; }
+    public List<UsuarioViewModel> Cadetes { get; set; }
+    public List<UsuarioViewModel> Clientes { get; set; }
 }

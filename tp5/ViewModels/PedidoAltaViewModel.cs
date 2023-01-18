@@ -2,11 +2,11 @@
 
 public class PedidoAltaViewModel
 {
-    public readonly List<CadeteViewModel> Cadetes;
+    public readonly List<UsuarioViewModel> Cadetes;
 
-    public readonly List<ClienteViewModel> Clientes;
+    public readonly List<UsuarioViewModel> Clientes;
 
-    public PedidoAltaViewModel(List<CadeteViewModel> cadetes, List<ClienteViewModel> clientes)
+    public PedidoAltaViewModel(List<UsuarioViewModel> cadetes, List<UsuarioViewModel> clientes)
     {
         Cadetes = cadetes;
         Clientes = clientes;
