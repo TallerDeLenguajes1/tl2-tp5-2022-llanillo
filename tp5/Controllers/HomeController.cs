@@ -45,8 +45,7 @@ public class HomeController : Controller
             var usuario = _mapper.Map<Usuario>(inicioViewModel.LoginViewModel);
             usuario = _repositorioUsuario.Verificar(usuario);
 
-            if (usuario is null) return RedirectToAction("Index");
-            if (usuario.Rol == Rol.Ninguno) return RedirectToAction("Index");
+            if (usuario is null || usuario.Rol == Rol.Ninguno) return RedirectToAction("Index");
 
             HttpContext.Session.SetInt32(SessionId, usuario.Id);
             HttpContext.Session.SetString(SessionNombre, usuario.Nombre);

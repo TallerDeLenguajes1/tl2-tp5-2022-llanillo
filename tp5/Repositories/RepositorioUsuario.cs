@@ -25,7 +25,7 @@ public class RepositorioUsuario : IRepositorioUsuario
             conexion.Open();
 
             using var reader = peticion.ExecuteReader();
-            var salida = new Usuario();
+            Usuario? salida = null;
 
             while (reader.Read())
                 salida = new Usuario
