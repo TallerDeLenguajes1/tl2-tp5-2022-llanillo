@@ -3,12 +3,16 @@
 
 <h2>Lista de Pedidos</h2>
 
-<a class="btn btn-primary btn-sm" asp-controller="Pedido" asp-action="AltaPedido">Crear nuevo pedido</a>
-
 @{
     var rolUsuario = HttpContextAccess.HttpContext?.Session.GetInt32(SessionRol);
 
+    if (rolUsuario != (int)Rol.Cliente)
+    {
+        <a class="btn btn-primary btn-sm" asp-controller="Pedido" asp-action="AltaPedido">Crear nuevo pedido</a>
+    }
 }
+
+
 <section>
     <article>
         <table class="table table-bordered table-striped">

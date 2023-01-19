@@ -21,7 +21,7 @@ builder.Services.AddLogging();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
 builder.Services.AddTransient<IRepositorioUsuario, RepositorioUsuario>();
-builder.Services.AddTransient<IRepositorio<Pedido>, RepositorioPedido>();
+builder.Services.AddTransient<IRepositorioPedido, RepositorioPedido>();
 
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>

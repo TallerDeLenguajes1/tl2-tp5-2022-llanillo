@@ -4,10 +4,10 @@ public class PedidoController : Controller
 {
     private readonly ILogger<PedidoController> _logger;
     private readonly IMapper _mapper;
-    private readonly IRepositorio<Pedido> _repositorioPedido;
+    private readonly IRepositorioPedido _repositorioPedido;
     private readonly IRepositorioUsuario _repositorioUsuario;
 
-    public PedidoController(ILogger<PedidoController> logger, IRepositorio<Pedido> repositorioPedido,
+    public PedidoController(ILogger<PedidoController> logger, IRepositorioPedido repositorioPedido,
         IRepositorioUsuario repositorioUsuario, IMapper mapper)
     {
         _logger = logger;
@@ -44,7 +44,7 @@ public class PedidoController : Controller
                 case Rol.Cadete:
                 {
                     var idCadete = (int)HttpContext.Session.GetInt32(SessionId);
-                    var pedidos = _repositorioPedido.BuscarTodosPorId(idCadete);
+                    var pedidos = _repositorioPedido.BuscarTodosPorUsuarioYRol(idCadete, Rol.Cadete);
                     var pedidosViewModel = _mapper.Map<List<PedidoViewModel>>(pedidos);
 
                     foreach (var pedido in pedidosViewModel)
@@ -58,13 +58,13 @@ public class PedidoController : Controller
                 case Rol.Cliente:
                 {
                     var idCliente = (int)HttpContext.Session.GetInt32(SessionId);
-                    var pedidos = _repositorioPedido.BuscarTodosPorId(idCliente);
+                    var pedidos = _repositorioPedido.BuscarTodosPorUsuarioYRol(idCliente, Rol.Cliente);
                     var pedidosViewModel = _mapper.Map<List<PedidoViewModel>>(pedidos);
 
                     foreach (var pedido in pedidosViewModel)
                     {
-                        var clienteId = int.Parse(pedido.Cliente);
-                        pedido.Cadete = _repositorioUsuario.BuscarPorId(clienteId)?.Nombre;
+                        var idCadete = int.Parse(pedido.Cadete);
+                        pedido.Cadete = _repositorioUsuario.BuscarPorId(idCadete)?.Nombre;
                     }
 
                     return View(pedidosViewModel);

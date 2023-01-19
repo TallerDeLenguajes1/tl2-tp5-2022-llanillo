@@ -97,7 +97,7 @@ public class ClienteController : Controller
     }
 
     [HttpPost]
-    public IActionResult ModificarCliente(UsuarioViewModel clienteViewModel)
+    public IActionResult ModificarCliente(UsuarioModificadoViewModel clienteViewModel)
     {
         try
         {

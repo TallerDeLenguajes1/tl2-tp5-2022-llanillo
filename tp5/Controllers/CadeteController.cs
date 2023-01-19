@@ -96,7 +96,7 @@ public class CadeteController : Controller
     }
 
     [HttpPost]
-    public IActionResult ModificarCadete(UsuarioViewModel cadeteViewModel)
+    public IActionResult ModificarCadete(UsuarioModificadoViewModel cadeteViewModel)
     {
         try
         {
