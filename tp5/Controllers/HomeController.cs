@@ -23,7 +23,7 @@ public class HomeController : Controller
     {
         try
         {
-            var inicioViewModel = new InicioViewModel();
+            var inicioViewModel = new HomeViewModel();
             var usuarios = _repositorioUsuario.BuscarTodos();
             var usuariosViewModel = _mapper.Map <List<UsuarioViewModel>>(usuarios);
             inicioViewModel.UsuarioViewModels = usuariosViewModel;
@@ -38,14 +38,17 @@ public class HomeController : Controller
 
 
     [HttpPost]
-    public IActionResult InicioSesion(InicioViewModel inicioViewModel)
+    public IActionResult InicioSesion(HomeViewModel homeViewModel)
     {
         try
         {
-            var usuario = _mapper.Map<Usuario>(inicioViewModel.LoginViewModel);
+            var usuario = _mapper.Map<Usuario>(homeViewModel.LoginViewModel);
             usuario = _repositorioUsuario.Verificar(usuario);
 
-            if (usuario is null || usuario.Rol == Rol.Ninguno) return RedirectToAction("Index");
+            if (usuario is null || usuario.Rol == Rol.Ninguno)
+            {
+                return RedirectToAction("Index");
+            }
 
             HttpContext.Session.SetInt32(SessionId, usuario.Id);
             HttpContext.Session.SetString(SessionNombre, usuario.Nombre);

@@ -12,5 +12,4 @@ public interface IRepositorio<T>
 
     void Eliminar(int id);
 
-    IEnumerable<T> BuscarTodosPorId(int id);
 }

@@ -233,9 +233,4 @@ public class RepositorioUsuario : IRepositorioUsuario
             Logger.Debug("Error al eliminar el usuario {Id} - {Error}", id, e.Message);
         }
     }
-
-    public IEnumerable<Usuario> BuscarTodosPorId(int id)
-    {
-        throw new NotImplementedException();
-    }
 }
