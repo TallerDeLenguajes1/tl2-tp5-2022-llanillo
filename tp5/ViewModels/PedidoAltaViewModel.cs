@@ -21,6 +21,6 @@ public class PedidoAltaViewModel
     [Display(Name = "Estado")]
     public string Estado { get; set; }
 
-    [Required] public int Cliente { get; set; }
-    [Required] public int Cadete { get; set; }
+    public int Cliente { get; set; }
+    public int Cadete { get; set; }
 }

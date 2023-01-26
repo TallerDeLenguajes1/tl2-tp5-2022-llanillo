@@ -88,7 +88,7 @@ public class PedidoController : Controller
         try
         {
             var sesionRol = HttpContext.Session.GetInt32(SessionRol);
-            if (sesionRol != (int)Rol.Administrador && sesionRol != (int)Rol.Cadete)
+            if (sesionRol != (int)Rol.Administrador && sesionRol != (int)Rol.Cliente)
             {
                 return RedirectToAction("Index", "Home");
             }
@@ -108,12 +108,12 @@ public class PedidoController : Controller
     }
 
     [HttpPost]
-    public IActionResult AltaPedido(PedidoViewModel pedidoViewModel)
+    public IActionResult AltaPedido(PedidoAltaViewModel pedidoViewModel)
     {
         try
         {
             var sesionRol = HttpContext.Session.GetInt32(SessionRol);
-            if (sesionRol != (int)Rol.Administrador && sesionRol != (int)Rol.Cadete)
+            if (sesionRol != (int)Rol.Administrador && sesionRol != (int)Rol.Cliente)
             {
                 return RedirectToAction("Index", "Home");
             }
@@ -143,8 +143,7 @@ public class PedidoController : Controller
     {
         try
         {
-            var sesionRol = HttpContext.Session.GetInt32(SessionRol);
-            if (sesionRol != (int)Rol.Administrador && sesionRol != (int)Rol.Cadete)
+            if(!HttpContext.Session.IsAvailable)
             {
                 return RedirectToAction("Index", "Home");
             }
@@ -175,8 +174,7 @@ public class PedidoController : Controller
     {
         try
         {
-            var sesionRol = HttpContext.Session.GetInt32(SessionRol);
-            if (sesionRol != (int)Rol.Administrador && sesionRol != (int)Rol.Cadete)
+            if(!HttpContext.Session.IsAvailable)
             {
                 return RedirectToAction("Index", "Home");
             }

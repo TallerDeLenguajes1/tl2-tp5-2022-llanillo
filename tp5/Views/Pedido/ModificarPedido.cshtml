@@ -21,17 +21,21 @@
                 </div>
             </div>
 
-            <div class="row mb-3">
-                <label class="col-sm-3 col-form-label" asp-for="Estado">Estado:</label>
-                <div class="col-sm-6">
-                    <input class="form-control" type="text" asp-for="Estado" value="@Model.Estado">
-                </div>
-            </div>
 
             @{
                 var rolUsuario = HttpContextAccess.HttpContext?.Session.GetInt32(SessionRol);
+                if(rolUsuario is (int)Rol.Administrador or (int)Rol.Cadete){
+                
+                    <div class="row mb-3">
+                        <label class="col-sm-3 col-form-label" asp-for="Estado">Estado:</label>
+                        <div class="col-sm-6">
+                            <input class="form-control" type="text" asp-for="Estado" value="@Model.Estado">
+                        </div>
+                    </div>
+                }
                 if (rolUsuario == (int)Rol.Administrador)
                 {
+
                     <div class="row mb-3">
                         <label class="col-sm-3 col-form-label" asp-for="Cadete">Cadete:</label>
                         <div class="col-sm-6">
@@ -72,6 +76,7 @@
                 }
                 else
                 {
+                    <input asp-for="Estado" type="hidden"/>
                     <input asp-for="Cadete" type="hidden"/>
                     <input asp-for="Cliente" type="hidden"/>
                 }
