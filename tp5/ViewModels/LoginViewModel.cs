@@ -12,4 +12,8 @@ public class LoginViewModel
     [Display(Name = "Clave")]
     [DataType(DataType.Password)]
     public string Clave { get; set; }
+
+    public LoginViewModel()
+    {
+    }
 }

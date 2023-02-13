@@ -25,4 +25,8 @@ public class UsuarioViewModel
     [Required] [Display(Name = "Clave")] public string Clave { get; set; }
 
     [Required] [Display(Name = "Rol")] public Rol Rol { get; set; }
+
+    public UsuarioViewModel()
+    {
+    }
 }

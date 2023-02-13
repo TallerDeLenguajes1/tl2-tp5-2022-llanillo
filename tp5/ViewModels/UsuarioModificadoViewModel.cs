@@ -13,4 +13,8 @@ public class UsuarioModificadoViewModel
 
     [Display(Name = "Teléfono")]
     public string Telefono { get; set; }
+
+    public UsuarioModificadoViewModel()
+    {
+    }
 }

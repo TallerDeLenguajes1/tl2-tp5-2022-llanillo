@@ -17,4 +17,8 @@ public class PedidoViewModel
     public string Cliente { get; set; }
 
     public string Cadete { get; set; }
+
+    public PedidoViewModel()
+    {
+    }
 }

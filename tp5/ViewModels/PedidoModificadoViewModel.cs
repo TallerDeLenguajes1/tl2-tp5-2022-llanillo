@@ -18,4 +18,8 @@ public class PedidoModificadoViewModel
 
     public List<UsuarioViewModel> Cadetes { get; set; }
     public List<UsuarioViewModel> Clientes { get; set; }
+
+    public PedidoModificadoViewModel()
+    {
+    }
 }
