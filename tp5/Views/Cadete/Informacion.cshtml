@@ -1,0 +1,37 @@
+﻿@model InformacionCadete
+
+@{
+    ViewBag.Title = "Resumen de Cadete";
+    Layout = "_Layout";
+}
+
+<h2>@ViewBag.Title</h2>
+
+
+<section>
+    <article>
+        <table class="table table-bordered table-striped">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Observación</th>
+                <th>Estado</th>
+                <th>Cliente</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            @foreach (var pedido in Model)
+            {
+                <tr>
+                    <td>@pedido.Id</td>
+                    <td>@pedido.Observacion</td>
+                    <td>@pedido.Estado</td>
+                    <td>@pedido.Cliente</td>
+                </tr>
+            }
+            </tbody>
+        </table>
+
+    </article>
+</section>

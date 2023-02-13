@@ -5,12 +5,14 @@ public class CadeteController : Controller
     private readonly ILogger<CadeteController> _logger;
     private readonly IMapper _mapper;
     private readonly IRepositorioUsuario _repositorioUsuario;
+    private readonly IRepositorioPedido _repositorioPedido;
 
-    public CadeteController(ILogger<CadeteController> logger, IRepositorioUsuario repositorioUsuario, IMapper mapper)
+    public CadeteController(ILogger<CadeteController> logger, IMapper mapper, IRepositorioUsuario repositorioUsuario, IRepositorioPedido repositorioPedido)
     {
         _logger = logger;
-        _repositorioUsuario = repositorioUsuario;
         _mapper = mapper;
+        _repositorioUsuario = repositorioUsuario;
+        _repositorioPedido = repositorioPedido;
     }
 
     public IActionResult Index()
@@ -19,6 +21,7 @@ public class CadeteController : Controller
         {
             if (HttpContext.Session.GetInt32(SessionRol) != (int)Rol.Administrador)
             {
+                HttpContext.Session.Clear();
                 return RedirectToAction("Index", "Home");
             }
 
@@ -40,6 +43,7 @@ public class CadeteController : Controller
         {
             if (HttpContext.Session.GetInt32(SessionRol) != (int)Rol.Administrador)
             {
+                HttpContext.Session.Clear();
                 return RedirectToAction("Index", "Home");
             }
 
@@ -59,6 +63,7 @@ public class CadeteController : Controller
         {
             if (HttpContext.Session.GetInt32(SessionRol) != (int)Rol.Administrador)
             {
+                HttpContext.Session.Clear();
                 return RedirectToAction("Index", "Home");
             }
 
@@ -89,6 +94,7 @@ public class CadeteController : Controller
         {
             if (HttpContext.Session.GetInt32(SessionRol) != (int)Rol.Administrador)
             {
+                HttpContext.Session.Clear();
                 return RedirectToAction("Index", "Home");
             }
 
@@ -111,6 +117,7 @@ public class CadeteController : Controller
         {
             if (HttpContext.Session.GetInt32(SessionRol) != (int)Rol.Administrador)
             {
+                HttpContext.Session.Clear();
                 return RedirectToAction("Index", "Home");
             }
 
@@ -135,12 +142,48 @@ public class CadeteController : Controller
     }
 
     [HttpGet]
+    public IActionResult Informacion(int id)
+    {
+        try
+        {
+            if (HttpContext.Session.GetInt32(SessionRol) != (int)Rol.Administrador)
+            {
+                HttpContext.Session.Clear();
+                return RedirectToAction("Index", "Home");
+            }
+
+            var pedidosDelCadete = _repositorioPedido.BuscarTodosPorUsuarioYRol(id, Rol.Cadete);
+            var pedidosDelCadeteViewModel = _mapper.Map<List<PedidoViewModel>>(pedidosDelCadete);
+
+            var enviosCadete = new EnviosCadeteViewModel
+            {
+                CantidadEnvios = pedidosDelCadeteViewModel.Count,
+                MontoGanado = pedidosDelCadeteViewModel.Sum(_ => 300)
+            };
+
+            var informacionCadete = new InformacionCadete
+            {
+                EnviosCadeteViewModel = enviosCadete,
+                PedidoViewModels = pedidosDelCadeteViewModel
+            };
+            
+            return View(informacionCadete);
+        }
+        catch (Exception e)
+        {
+            _logger.LogError("Error al acceder el Modificar Cadete {Error}", e.Message);
+            return View("Error");
+        }
+    }
+
+    [HttpGet]
     public IActionResult BajaCadete(int id)
     {
         try
         {
             if (HttpContext.Session.GetInt32(SessionRol) != (int)Rol.Administrador)
             {
+                HttpContext.Session.Clear();
                 return RedirectToAction("Index", "Home");
             }
 
@@ -157,11 +200,13 @@ public class CadeteController : Controller
     [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
     public IActionResult Error()
     {
-        if (HttpContext.Session.GetInt32(SessionRol) != (int)Rol.Administrador)
+        if (HttpContext.Session.GetInt32(SessionRol) == (int)Rol.Administrador)
         {
-            return RedirectToAction("Index", "Home");
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        HttpContext.Session.Clear();
+        return RedirectToAction("Index", "Home");
+
     }
 }
