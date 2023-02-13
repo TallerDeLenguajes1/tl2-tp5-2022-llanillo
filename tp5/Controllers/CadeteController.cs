@@ -158,7 +158,7 @@ public class CadeteController : Controller
             var enviosCadete = new EnviosCadeteViewModel
             {
                 CantidadEnvios = pedidosDelCadeteViewModel.Count,
-                MontoGanado = pedidosDelCadeteViewModel.Sum(_ => 300)
+                MontoGanado = pedidosDelCadeteViewModel.Sum(x => x.Estado == "Entregado" ? 300 : 0)
             };
 
             var informacionCadete = new InformacionCadete
