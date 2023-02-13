@@ -38,12 +38,12 @@
                     </div>
                     
                     <div class="row mb-3">
-                        <label class="col-sm-3 col-form-label" asp-for="@Model.Cadetes">Cadete:</label>
+                        <label class="col-sm-3 col-form-label" asp-for="@Model.Cadetes">Cliente:</label>
                         <div class="col-sm-6">
-                            <select class="form-select form-select-sm" name="Cadete" id="cadete">
-                                @foreach (var cadete in Model.Cadetes)
+                            <select class="form-select form-select-sm" name="Cliente" id="cliente">
+                                @foreach (var cliente in Model.Clientes)
                                 {
-                                    <option value="@cadete.Id">@cadete.Nombre</option>
+                                    <option value="@cliente.Id">@cliente.Nombre</option>
                                 }
                             </select>
                         </div>
