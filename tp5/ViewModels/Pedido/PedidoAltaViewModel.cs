@@ -1,4 +1,6 @@
-﻿namespace tp5.ViewModels;
+﻿using tp5.ViewModels.Usuario.General;
+
+namespace tp5.ViewModels.Pedido;
 
 public class PedidoAltaViewModel
 {

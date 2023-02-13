@@ -1,4 +1,4 @@
-﻿namespace tp5.ViewModels;
+﻿namespace tp5.ViewModels.Pedido;
 
 public class PedidoViewModel
 {
@@ -17,8 +17,4 @@ public class PedidoViewModel
     public string Cliente { get; set; }
 
     public string Cadete { get; set; }
-
-    public PedidoViewModel()
-    {
-    }
 }

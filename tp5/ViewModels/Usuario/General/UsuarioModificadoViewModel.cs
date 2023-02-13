@@ -1,4 +1,4 @@
-﻿namespace tp5.ViewModels;
+﻿namespace tp5.ViewModels.Usuario.General;
 
 public class UsuarioModificadoViewModel
 {
@@ -8,13 +8,7 @@ public class UsuarioModificadoViewModel
     [Display(Name = "Nombre")]
     public string Nombre { get; set; }
 
-    [Display(Name = "Dirreción")]
-    public string Direccion { get; set; }
+    [Display(Name = "Dirreción")] public string Direccion { get; set; }
 
-    [Display(Name = "Teléfono")]
-    public string Telefono { get; set; }
-
-    public UsuarioModificadoViewModel()
-    {
-    }
+    [Display(Name = "Teléfono")] public string Telefono { get; set; }
 }

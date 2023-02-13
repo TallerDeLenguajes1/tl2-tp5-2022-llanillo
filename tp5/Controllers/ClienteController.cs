@@ -4,12 +4,12 @@ public class ClienteController : Controller
 {
     private readonly ILogger<ClienteController> _logger;
     private readonly IMapper _mapper;
-    private readonly IRepositorioUsuario _repositorioUsuario;
+    private readonly RepositorioUsuarioBase _repositorioUsuarioBase;
 
-    public ClienteController(ILogger<ClienteController> logger, IRepositorioUsuario repositorioUsuario, IMapper mapper)
+    public ClienteController(ILogger<ClienteController> logger, RepositorioUsuarioBase repositorioUsuarioBase, IMapper mapper)
     {
         _logger = logger;
-        _repositorioUsuario = repositorioUsuario;
+        _repositorioUsuarioBase = repositorioUsuarioBase;
         _mapper = mapper;
     }
 
@@ -18,11 +18,9 @@ public class ClienteController : Controller
         try
         {
             if (HttpContext.Session.GetInt32(SessionRol) != (int)Rol.Administrador)
-            {
                 return RedirectToAction("Index", "Home");
-            }
 
-            var clientes = _repositorioUsuario.BuscarTodosPorRol(Rol.Cliente);
+            var clientes = _repositorioUsuarioBase.BuscarTodosPorRol(Rol.Cliente);
             var clientesViewModel = _mapper.Map<List<UsuarioViewModel>>(clientes);
             return View(clientesViewModel);
         }
@@ -39,9 +37,7 @@ public class ClienteController : Controller
         try
         {
             if (HttpContext.Session.GetInt32(SessionRol) != (int)Rol.Administrador)
-            {
                 return RedirectToAction("Index", "Home");
-            }
 
             return View("AltaCliente");
         }
@@ -58,14 +54,12 @@ public class ClienteController : Controller
         try
         {
             if (HttpContext.Session.GetInt32(SessionRol) != (int)Rol.Administrador)
-            {
                 return RedirectToAction("Index", "Home");
-            }
 
             if (ModelState.IsValid)
             {
                 var cliente = _mapper.Map<Usuario>(clienteViewModel);
-                _repositorioUsuario.Insertar(cliente);
+                _repositorioUsuarioBase.Insertar(cliente);
             }
             else
             {
@@ -88,11 +82,9 @@ public class ClienteController : Controller
         try
         {
             if (HttpContext.Session.GetInt32(SessionRol) != (int)Rol.Administrador)
-            {
                 return RedirectToAction("Index", "Home");
-            }
 
-            var cliente = _repositorioUsuario.BuscarPorId(id);
+            var cliente = _repositorioUsuarioBase.BuscarPorId(id);
             if (cliente is null) return RedirectToAction("Index");
             var clienteViewModel = _mapper.Map<UsuarioViewModel>(cliente);
             return View(clienteViewModel);
@@ -110,14 +102,12 @@ public class ClienteController : Controller
         try
         {
             if (HttpContext.Session.GetInt32(SessionRol) != (int)Rol.Administrador)
-            {
                 return RedirectToAction("Index", "Home");
-            }
 
             if (ModelState.IsValid)
             {
                 var cliente = _mapper.Map<Usuario>(clienteViewModel);
-                _repositorioUsuario.Actualizar(cliente);
+                _repositorioUsuarioBase.Actualizar(cliente);
             }
             else
             {
@@ -140,11 +130,9 @@ public class ClienteController : Controller
         try
         {
             if (HttpContext.Session.GetInt32(SessionRol) != (int)Rol.Administrador)
-            {
                 return RedirectToAction("Index", "Home");
-            }
 
-            _repositorioUsuario.Eliminar(id);
+            _repositorioUsuarioBase.Eliminar(id);
             return RedirectToAction("Index");
         }
         catch (Exception e)
@@ -158,9 +146,7 @@ public class ClienteController : Controller
     public IActionResult Error()
     {
         if (HttpContext.Session.GetInt32(SessionRol) != (int)Rol.Administrador)
-        {
             return RedirectToAction("Index", "Home");
-        }
 
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }

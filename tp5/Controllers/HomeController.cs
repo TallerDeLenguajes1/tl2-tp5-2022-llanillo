@@ -1,16 +1,19 @@
-﻿namespace tp5.Controllers;
+﻿using tp5.ViewModels.Home;
+using tp5.ViewModels.Usuario.General;
+
+namespace tp5.Controllers;
 
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
     private readonly IMapper _mapper;
-    private readonly IRepositorioUsuario _repositorioUsuario;
+    private readonly RepositorioUsuarioBase _repositorioUsuarioBase;
 
-    public HomeController(ILogger<HomeController> logger, IMapper mapper, IRepositorioUsuario repositorioUsuario)
+    public HomeController(ILogger<HomeController> logger, IMapper mapper, RepositorioUsuarioBase repositorioUsuarioBase)
     {
         _logger = logger;
         _mapper = mapper;
-        _repositorioUsuario = repositorioUsuario;
+        _repositorioUsuarioBase = repositorioUsuarioBase;
     }
 
     [HttpGet]
@@ -19,8 +22,8 @@ public class HomeController : Controller
         try
         {
             var inicioViewModel = new HomeViewModel();
-            var usuarios = _repositorioUsuario.BuscarTodos();
-            var usuariosViewModel = _mapper.Map <List<UsuarioViewModel>>(usuarios);
+            var usuarios = _repositorioUsuarioBase.BuscarTodos();
+            var usuariosViewModel = _mapper.Map<List<UsuarioViewModel>>(usuarios);
             inicioViewModel.UsuarioViewModels = usuariosViewModel;
             return View(inicioViewModel);
         }
@@ -38,12 +41,9 @@ public class HomeController : Controller
         try
         {
             var usuario = _mapper.Map<Usuario>(homeViewModel.LoginViewModel);
-            usuario = _repositorioUsuario.Verificar(usuario);
+            usuario = _repositorioUsuarioBase.Verificar(usuario);
 
-            if (usuario is null || usuario.Rol == Rol.Ninguno)
-            {
-                return RedirectToAction("Index");
-            }
+            if (usuario is null || usuario.Rol == Rol.Ninguno) return RedirectToAction("Index");
 
             HttpContext.Session.SetInt32(SessionId, usuario.Id);
             HttpContext.Session.SetString(SessionNombre, usuario.Nombre);

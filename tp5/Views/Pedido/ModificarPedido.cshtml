@@ -1,5 +1,5 @@
 ﻿@inject IHttpContextAccessor HttpContextAccess
-@model PedidoModificadoViewModel
+@model tp5.ViewModels.Pedido.PedidoModificadoViewModel
 
 @{
     ViewBag.Title = "Modificar Pedido";
@@ -24,8 +24,8 @@
 
             @{
                 var rolUsuario = HttpContextAccess.HttpContext?.Session.GetInt32(SessionRol);
-                if(rolUsuario is (int)Rol.Administrador or (int)Rol.Cadete){
-                
+                if (rolUsuario is (int)Rol.Administrador or (int)Rol.Cadete)
+                {
                     <div class="row mb-3">
                         <label class="col-sm-3 col-form-label" asp-for="Estado">Estado:</label>
                         <div class="col-sm-6">
@@ -35,7 +35,6 @@
                 }
                 if (rolUsuario == (int)Rol.Administrador)
                 {
-
                     <div class="row mb-3">
                         <label class="col-sm-3 col-form-label" asp-for="Cadete">Cadete:</label>
                         <div class="col-sm-6">

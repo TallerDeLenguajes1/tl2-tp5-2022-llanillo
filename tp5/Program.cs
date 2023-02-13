@@ -1,15 +1,18 @@
 global using static tp5.Util.SessionUtil;
-global using tp5.Repositories;
+global using tp5.Repositories.Interface;
+global using tp5.Repositories.Impl;
 global using tp5.Models;
-global using tp5.ViewModels;
 global using NLog;
 global using AutoMapper;
 global using Microsoft.AspNetCore.Mvc;
-global using Microsoft.AspNetCore.Session;
 global using Microsoft.AspNetCore.Http;
 global using Microsoft.Data.Sqlite;
 global using System.Diagnostics;
 global using System.ComponentModel.DataAnnotations;
+global using tp5.ViewModels.Usuario.Cadete;
+global using tp5.ViewModels.Usuario.General;
+global using tp5.ViewModels.Pedido;
+global using tp5.ViewModels.Home;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,8 +23,8 @@ builder.Services.AddLogging();
 
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-builder.Services.AddTransient<IRepositorioUsuario, RepositorioUsuario>();
-builder.Services.AddTransient<IRepositorioPedido, RepositorioPedido>();
+builder.Services.AddTransient<RepositorioUsuarioBase, RepositorioUsuario>();
+builder.Services.AddTransient<RepositorioPedidoBase, RepositorioPedido>();
 
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>

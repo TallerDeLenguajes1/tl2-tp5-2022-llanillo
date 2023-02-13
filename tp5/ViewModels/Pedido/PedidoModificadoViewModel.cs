@@ -1,4 +1,6 @@
-﻿namespace tp5.ViewModels;
+﻿using tp5.ViewModels.Usuario.General;
+
+namespace tp5.ViewModels.Pedido;
 
 public class PedidoModificadoViewModel
 {
@@ -18,8 +20,4 @@ public class PedidoModificadoViewModel
 
     public List<UsuarioViewModel> Cadetes { get; set; }
     public List<UsuarioViewModel> Clientes { get; set; }
-
-    public PedidoModificadoViewModel()
-    {
-    }
 }

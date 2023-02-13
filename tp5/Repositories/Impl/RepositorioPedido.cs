@@ -1,19 +1,15 @@
-﻿namespace tp5.Repositories;
+﻿namespace tp5.Repositories.Impl;
 
-public class RepositorioPedido : IRepositorioPedido
+public class RepositorioPedido : Interface.RepositorioPedidoBase
 {
     protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-    private readonly IConfiguration _configuration;
-    protected readonly string? CadenaConexion;
-    
-    public RepositorioPedido(IConfiguration configuration) 
+
+    public RepositorioPedido(IConfiguration configuration) : base(configuration)
     {
-        _configuration = configuration;
-        CadenaConexion = _configuration.GetConnectionString("ConnectionString");
     }
 
-    public Pedido? BuscarPorId(int id)
+    public override Pedido? BuscarPorId(int id)
     {
         const string consulta = "select * from Pedido where id_pedido = @id";
 
@@ -47,7 +43,7 @@ public class RepositorioPedido : IRepositorioPedido
         return null;
     }
 
-    public IEnumerable<Pedido> BuscarTodos()
+    public override IEnumerable<Pedido> BuscarTodos()
     {
         const string consulta = "select * from Pedido";
 
@@ -83,7 +79,7 @@ public class RepositorioPedido : IRepositorioPedido
         return new List<Pedido>();
     }
 
-    public void Insertar(Pedido entidad)
+    public override void Insertar(Pedido entidad)
     {
         const string consulta =
             "insert into Pedido (observacion, estado, id_cadete, id_cliente) values (@observacion, @estado, @cadete, @cliente)";
@@ -106,7 +102,7 @@ public class RepositorioPedido : IRepositorioPedido
         }
     }
 
-    public void Actualizar(Pedido entidad)
+    public override void Actualizar(Pedido entidad)
     {
         const string consulta =
             "update Pedido set observacion = @observacion, estado = @estado, id_cadete = @cadete, id_cliente = @cliente where id_pedido = @id";
@@ -132,7 +128,7 @@ public class RepositorioPedido : IRepositorioPedido
         }
     }
 
-    public void Eliminar(int id)
+    public override void Eliminar(int id)
     {
         const string consulta =
             "delete from Pedido where id_pedido = @id";
@@ -153,7 +149,7 @@ public class RepositorioPedido : IRepositorioPedido
         }
     }
 
-    public IEnumerable<Pedido> BuscarTodosPorId(int id)
+    public override IEnumerable<Pedido> BuscarTodosPorId(int id)
     {
         const string consulta = "select * from Pedido where id_cadete = @id";
 
@@ -191,10 +187,12 @@ public class RepositorioPedido : IRepositorioPedido
     }
 
 
-    public IEnumerable<Pedido> BuscarTodosPorUsuarioYRol(int idUsuario, Rol rol)
+    public override IEnumerable<Pedido> BuscarTodosPorUsuarioYRol(int idUsuario, Rol rol)
     {
         string consulta;
-        consulta = rol == Rol.Cadete ? "select * from Pedido where id_cadete = @id" : "select * from Pedido where id_cliente = @id";
+        consulta = rol == Rol.Cadete
+            ? "select * from Pedido where id_cadete = @id"
+            : "select * from Pedido where id_cliente = @id";
 
         try
         {

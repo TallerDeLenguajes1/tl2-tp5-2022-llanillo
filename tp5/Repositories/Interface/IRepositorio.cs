@@ -1,4 +1,4 @@
-﻿namespace tp5.Repositories;
+﻿namespace tp5.Repositories.Interface;
 
 public interface IRepositorio<T>
 {
@@ -11,5 +11,4 @@ public interface IRepositorio<T>
     void Actualizar(T entidad);
 
     void Eliminar(int id);
-
 }

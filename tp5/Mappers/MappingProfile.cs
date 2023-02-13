@@ -1,4 +1,8 @@
-﻿namespace tp5.Mappers;
+﻿using tp5.ViewModels.Home;
+using tp5.ViewModels.Pedido;
+using tp5.ViewModels.Usuario.General;
+
+namespace tp5.Mappers;
 
 public class MappingProfile : Profile
 {

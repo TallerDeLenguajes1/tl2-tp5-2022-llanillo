@@ -1,19 +1,15 @@
-﻿namespace tp5.Repositories;
+﻿namespace tp5.Repositories.Impl;
 
-public class RepositorioUsuario : IRepositorioUsuario
+public class RepositorioUsuario : Interface.RepositorioUsuarioBase
 {
     protected static readonly Logger Logger = LogManager.GetCurrentClassLogger();
 
-    private readonly IConfiguration _configuration;
-    protected readonly string? CadenaConexion;
 
-    public RepositorioUsuario(IConfiguration configuration)
+    public RepositorioUsuario(IConfiguration configuration) : base(configuration)
     {
-        _configuration = configuration;
-        CadenaConexion = _configuration.GetConnectionString("ConnectionString");
     }
 
-    public Usuario? Verificar(Usuario usuario)
+    public override Usuario? Verificar(Usuario usuario)
     {
         var consulta =
             $"select * from Usuario where usuario = '{usuario.NombreUsuario}' and clave = '{usuario.Clave}'";
@@ -50,7 +46,7 @@ public class RepositorioUsuario : IRepositorioUsuario
         return null;
     }
 
-    public IEnumerable<Usuario> BuscarTodosPorRol(Rol rol)
+    public override IEnumerable<Usuario> BuscarTodosPorRol(Rol rol)
     {
         const string consulta = "select * from Usuario where @rol = rol";
 
@@ -90,7 +86,7 @@ public class RepositorioUsuario : IRepositorioUsuario
         return new List<Usuario>();
     }
 
-    public Usuario? BuscarPorId(int id)
+    public override Usuario? BuscarPorId(int id)
     {
         const string consulta = "select * from Usuario where id_usuario = @id";
 
@@ -101,11 +97,11 @@ public class RepositorioUsuario : IRepositorioUsuario
             peticion.Parameters.AddWithValue("@id", id);
             conexion.Open();
 
-            Usuario salida = null; 
+            Usuario salida = null;
             using var reader = peticion.ExecuteReader();
 
             while (reader.Read())
-                salida = new Usuario()
+                salida = new Usuario
                 {
                     Id = reader.GetInt32(0),
                     Nombre = reader.GetString(1),
@@ -125,7 +121,7 @@ public class RepositorioUsuario : IRepositorioUsuario
         return null;
     }
 
-    public IEnumerable<Usuario> BuscarTodos()
+    public override IEnumerable<Usuario> BuscarTodos()
     {
         const string consulta = "select * from Usuario";
 
@@ -164,11 +160,11 @@ public class RepositorioUsuario : IRepositorioUsuario
         return new List<Usuario>();
     }
 
-    public void Insertar(Usuario entidad)
+    public override void Insertar(Usuario entidad)
     {
         const string consulta =
             "insert into Usuario (nombre, usuario, clave, rol, direccion, telefono) values (@nombre, @usuario, @clave, @rol, @direccion, @telefono)";
-            
+
         try
         {
             using var conexion = new SqliteConnection(CadenaConexion);
@@ -190,7 +186,7 @@ public class RepositorioUsuario : IRepositorioUsuario
         }
     }
 
-    public void Actualizar(Usuario entidad)
+    public override void Actualizar(Usuario entidad)
     {
         const string consulta =
             "update Usuario set nombre = @nombre, direccion = @direccion, telefono = @telefono where id_usuario = @id";
@@ -213,7 +209,7 @@ public class RepositorioUsuario : IRepositorioUsuario
         }
     }
 
-    public void Eliminar(int id)
+    public override void Eliminar(int id)
     {
         const string consulta =
             "delete from Usuario where id_usuario = @id";
@@ -223,7 +219,7 @@ public class RepositorioUsuario : IRepositorioUsuario
             using var conexion = new SqliteConnection(CadenaConexion);
             var peticion = new SqliteCommand(consulta, conexion);
             conexion.Open();
-            
+
             peticion.Parameters.AddWithValue("@id", id);
             peticion.ExecuteReader();
             conexion.Close();

@@ -4,15 +4,16 @@ public class CadeteController : Controller
 {
     private readonly ILogger<CadeteController> _logger;
     private readonly IMapper _mapper;
-    private readonly IRepositorioUsuario _repositorioUsuario;
-    private readonly IRepositorioPedido _repositorioPedido;
+    private readonly RepositorioPedidoBase _repositorioPedidoBase;
+    private readonly RepositorioUsuarioBase _repositorioUsuarioBase;
 
-    public CadeteController(ILogger<CadeteController> logger, IMapper mapper, IRepositorioUsuario repositorioUsuario, IRepositorioPedido repositorioPedido)
+    public CadeteController(ILogger<CadeteController> logger, IMapper mapper, RepositorioUsuarioBase repositorioUsuarioBase,
+        RepositorioPedidoBase repositorioPedidoBase)
     {
         _logger = logger;
         _mapper = mapper;
-        _repositorioUsuario = repositorioUsuario;
-        _repositorioPedido = repositorioPedido;
+        _repositorioUsuarioBase = repositorioUsuarioBase;
+        _repositorioPedidoBase = repositorioPedidoBase;
     }
 
     public IActionResult Index()
@@ -25,7 +26,7 @@ public class CadeteController : Controller
                 return RedirectToAction("Index", "Home");
             }
 
-            var cadetes = _repositorioUsuario.BuscarTodosPorRol(Rol.Cadete);
+            var cadetes = _repositorioUsuarioBase.BuscarTodosPorRol(Rol.Cadete);
             var cadetesViewModel = _mapper.Map<List<UsuarioViewModel>>(cadetes);
             return View(cadetesViewModel);
         }
@@ -41,13 +42,14 @@ public class CadeteController : Controller
     {
         try
         {
-            if (HttpContext.Session.GetInt32(SessionRol) != (int)Rol.Administrador)
+            if (HttpContext.Session.GetInt32(SessionRol) == (int)Rol.Administrador)
             {
-                HttpContext.Session.Clear();
-                return RedirectToAction("Index", "Home");
+                return View("AltaCadete");
             }
+            
+            HttpContext.Session.Clear();
+            return RedirectToAction("Index", "Home");
 
-            return View("AltaCadete");
         }
         catch (Exception e)
         {
@@ -56,6 +58,9 @@ public class CadeteController : Controller
         }
     }
 
+    /*
+     * Alta cadete llamada una vez le da a "Enviar" a través del formulario
+     */
     [HttpPost]
     public IActionResult AltaCadete(UsuarioViewModel cadeteViewModel)
     {
@@ -70,7 +75,7 @@ public class CadeteController : Controller
             if (ModelState.IsValid)
             {
                 var cadete = _mapper.Map<Usuario>(cadeteViewModel);
-                _repositorioUsuario.Insertar(cadete);
+                _repositorioUsuarioBase.Insertar(cadete);
             }
             else
             {
@@ -98,7 +103,7 @@ public class CadeteController : Controller
                 return RedirectToAction("Index", "Home");
             }
 
-            var cadete = _repositorioUsuario.BuscarPorId(id);
+            var cadete = _repositorioUsuarioBase.BuscarPorId(id);
             if (cadete is null) return RedirectToAction("Index");
             var cadeteViewModel = _mapper.Map<UsuarioViewModel>(cadete);
             return View(cadeteViewModel);
@@ -124,7 +129,7 @@ public class CadeteController : Controller
             if (ModelState.IsValid)
             {
                 var cadete = _mapper.Map<Usuario>(cadeteViewModel);
-                _repositorioUsuario.Actualizar(cadete);
+                _repositorioUsuarioBase.Actualizar(cadete);
             }
             else
             {
@@ -152,7 +157,7 @@ public class CadeteController : Controller
                 return RedirectToAction("Index", "Home");
             }
 
-            var pedidosDelCadete = _repositorioPedido.BuscarTodosPorUsuarioYRol(id, Rol.Cadete);
+            var pedidosDelCadete = _repositorioPedidoBase.BuscarTodosPorUsuarioYRol(id, Rol.Cadete);
             var pedidosDelCadeteViewModel = _mapper.Map<List<PedidoViewModel>>(pedidosDelCadete);
 
             var enviosCadete = new EnviosCadeteViewModel
@@ -166,7 +171,7 @@ public class CadeteController : Controller
                 EnviosCadeteViewModel = enviosCadete,
                 PedidoViewModels = pedidosDelCadeteViewModel
             };
-            
+
             return View(informacionCadete);
         }
         catch (Exception e)
@@ -187,7 +192,7 @@ public class CadeteController : Controller
                 return RedirectToAction("Index", "Home");
             }
 
-            _repositorioUsuario.Eliminar(id);
+            _repositorioUsuarioBase.Eliminar(id);
             return RedirectToAction("Index");
         }
         catch (Exception e)
@@ -201,12 +206,9 @@ public class CadeteController : Controller
     public IActionResult Error()
     {
         if (HttpContext.Session.GetInt32(SessionRol) == (int)Rol.Administrador)
-        {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-        }
 
         HttpContext.Session.Clear();
         return RedirectToAction("Index", "Home");
-
     }
 }

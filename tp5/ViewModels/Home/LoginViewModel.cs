@@ -1,4 +1,4 @@
-﻿namespace tp5.ViewModels;
+﻿namespace tp5.ViewModels.Home;
 
 public class LoginViewModel
 {
@@ -12,8 +12,4 @@ public class LoginViewModel
     [Display(Name = "Clave")]
     [DataType(DataType.Password)]
     public string Clave { get; set; }
-
-    public LoginViewModel()
-    {
-    }
 }

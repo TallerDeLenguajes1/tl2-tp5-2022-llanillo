@@ -4,15 +4,15 @@ public class PedidoController : Controller
 {
     private readonly ILogger<PedidoController> _logger;
     private readonly IMapper _mapper;
-    private readonly IRepositorioPedido _repositorioPedido;
-    private readonly IRepositorioUsuario _repositorioUsuario;
+    private readonly RepositorioPedidoBase _repositorioPedidoBase;
+    private readonly RepositorioUsuarioBase _repositorioUsuarioBase;
 
-    public PedidoController(ILogger<PedidoController> logger, IRepositorioPedido repositorioPedido,
-        IRepositorioUsuario repositorioUsuario, IMapper mapper)
+    public PedidoController(ILogger<PedidoController> logger, RepositorioPedidoBase repositorioPedidoBase,
+        RepositorioUsuarioBase repositorioUsuarioBase, IMapper mapper)
     {
         _logger = logger;
-        _repositorioPedido = repositorioPedido;
-        _repositorioUsuario = repositorioUsuario;
+        _repositorioPedidoBase = repositorioPedidoBase;
+        _repositorioUsuarioBase = repositorioUsuarioBase;
         _mapper = mapper;
     }
 
@@ -27,7 +27,7 @@ public class PedidoController : Controller
             {
                 case Rol.Administrador:
                 {
-                    var pedidos = _repositorioPedido.BuscarTodos();
+                    var pedidos = _repositorioPedidoBase.BuscarTodos();
                     var pedidosViewModel = _mapper.Map<List<PedidoViewModel>>(pedidos);
 
                     foreach (var pedido in pedidosViewModel)
@@ -35,8 +35,8 @@ public class PedidoController : Controller
                         var clienteId = int.Parse(pedido.Cliente);
                         var idCadete = int.Parse(pedido.Cadete);
 
-                        pedido.Cliente = _repositorioUsuario.BuscarPorId(clienteId)?.Nombre;
-                        pedido.Cadete = _repositorioUsuario.BuscarPorId(idCadete)?.Nombre;
+                        pedido.Cliente = _repositorioUsuarioBase.BuscarPorId(clienteId)?.Nombre;
+                        pedido.Cadete = _repositorioUsuarioBase.BuscarPorId(idCadete)?.Nombre;
                     }
 
                     return View(pedidosViewModel);
@@ -44,13 +44,13 @@ public class PedidoController : Controller
                 case Rol.Cadete:
                 {
                     var idCadete = (int)HttpContext.Session.GetInt32(SessionId);
-                    var pedidos = _repositorioPedido.BuscarTodosPorUsuarioYRol(idCadete, Rol.Cadete);
+                    var pedidos = _repositorioPedidoBase.BuscarTodosPorUsuarioYRol(idCadete, Rol.Cadete);
                     var pedidosViewModel = _mapper.Map<List<PedidoViewModel>>(pedidos);
 
                     foreach (var pedido in pedidosViewModel)
                     {
                         var idCliente = int.Parse(pedido.Cliente);
-                        pedido.Cliente = _repositorioUsuario.BuscarPorId(idCliente)?.Nombre;
+                        pedido.Cliente = _repositorioUsuarioBase.BuscarPorId(idCliente)?.Nombre;
                     }
 
                     return View(pedidosViewModel);
@@ -58,13 +58,13 @@ public class PedidoController : Controller
                 case Rol.Cliente:
                 {
                     var idCliente = (int)HttpContext.Session.GetInt32(SessionId);
-                    var pedidos = _repositorioPedido.BuscarTodosPorUsuarioYRol(idCliente, Rol.Cliente);
+                    var pedidos = _repositorioPedidoBase.BuscarTodosPorUsuarioYRol(idCliente, Rol.Cliente);
                     var pedidosViewModel = _mapper.Map<List<PedidoViewModel>>(pedidos);
 
                     foreach (var pedido in pedidosViewModel)
                     {
                         var idCadete = int.Parse(pedido.Cadete);
-                        pedido.Cadete = _repositorioUsuario.BuscarPorId(idCadete)?.Nombre;
+                        pedido.Cadete = _repositorioUsuarioBase.BuscarPorId(idCadete)?.Nombre;
                     }
 
                     return View(pedidosViewModel);
@@ -89,12 +89,10 @@ public class PedidoController : Controller
         {
             var sesionRol = HttpContext.Session.GetInt32(SessionRol);
             if (sesionRol != (int)Rol.Administrador && sesionRol != (int)Rol.Cliente)
-            {
                 return RedirectToAction("Index", "Home");
-            }
 
-            var cadetes = _repositorioUsuario.BuscarTodosPorRol(Rol.Cadete);
-            var clientes = _repositorioUsuario.BuscarTodosPorRol(Rol.Cliente);
+            var cadetes = _repositorioUsuarioBase.BuscarTodosPorRol(Rol.Cadete);
+            var clientes = _repositorioUsuarioBase.BuscarTodosPorRol(Rol.Cliente);
             var cadetesViewModel = _mapper.Map<List<UsuarioViewModel>>(cadetes);
             var clientesViewModel = _mapper.Map<List<UsuarioViewModel>>(clientes);
             var pedidoAltaViewModel = new PedidoAltaViewModel(cadetesViewModel, clientesViewModel);
@@ -114,14 +112,12 @@ public class PedidoController : Controller
         {
             var sesionRol = HttpContext.Session.GetInt32(SessionRol);
             if (sesionRol != (int)Rol.Administrador && sesionRol != (int)Rol.Cliente)
-            {
                 return RedirectToAction("Index", "Home");
-            }
 
             if (ModelState.IsValid)
             {
                 var pedido = _mapper.Map<Pedido>(pedidoViewModel);
-                _repositorioPedido.Insertar(pedido);
+                _repositorioPedidoBase.Insertar(pedido);
             }
             else
             {
@@ -143,17 +139,14 @@ public class PedidoController : Controller
     {
         try
         {
-            if(!HttpContext.Session.IsAvailable)
-            {
-                return RedirectToAction("Index", "Home");
-            }
+            if (!HttpContext.Session.IsAvailable) return RedirectToAction("Index", "Home");
 
-            var pedido = _repositorioPedido.BuscarPorId(id);
+            var pedido = _repositorioPedidoBase.BuscarPorId(id);
 
-            var cadetes = _repositorioUsuario.BuscarTodosPorRol(Rol.Cadete);
+            var cadetes = _repositorioUsuarioBase.BuscarTodosPorRol(Rol.Cadete);
             var cadetesViewModel = _mapper.Map<List<UsuarioViewModel>>(cadetes);
 
-            var clientes = _repositorioUsuario.BuscarTodosPorRol(Rol.Cliente);
+            var clientes = _repositorioUsuarioBase.BuscarTodosPorRol(Rol.Cliente);
             var clientesViewModel = _mapper.Map<List<UsuarioViewModel>>(clientes);
 
             var pedidoModificadoViewModel = _mapper.Map<PedidoModificadoViewModel>(pedido);
@@ -174,15 +167,12 @@ public class PedidoController : Controller
     {
         try
         {
-            if(!HttpContext.Session.IsAvailable)
-            {
-                return RedirectToAction("Index", "Home");
-            }
+            if (!HttpContext.Session.IsAvailable) return RedirectToAction("Index", "Home");
 
             if (ModelState.IsValid)
             {
                 var pedido = _mapper.Map<Pedido>(pedidoViewModel);
-                _repositorioPedido.Actualizar(pedido);
+                _repositorioPedidoBase.Actualizar(pedido);
             }
             else
             {
@@ -206,11 +196,9 @@ public class PedidoController : Controller
         {
             var sesionRol = HttpContext.Session.GetInt32(SessionRol);
             if (sesionRol != (int)Rol.Administrador && sesionRol != (int)Rol.Cadete)
-            {
                 return RedirectToAction("Index", "Home");
-            }
 
-            _repositorioPedido.Eliminar(id);
+            _repositorioPedidoBase.Eliminar(id);
             return RedirectToAction("Index");
         }
         catch (Exception e)
@@ -225,9 +213,7 @@ public class PedidoController : Controller
     {
         var sesionRol = HttpContext.Session.GetInt32(SessionRol);
         if (sesionRol != (int)Rol.Administrador && sesionRol != (int)Rol.Cadete)
-        {
             return RedirectToAction("Index", "Home");
-        }
 
         return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
     }
