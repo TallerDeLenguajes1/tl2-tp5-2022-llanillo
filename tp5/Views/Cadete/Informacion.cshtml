@@ -7,6 +7,12 @@
 
 <h2>@ViewBag.Title</h2>
 
+<section>
+    <article class="alert-heading">
+        <p>Monto Ganado: @Model.EnviosCadeteViewModel.MontoGanado</p>
+        <p>Cantidad Envíos: @Model.EnviosCadeteViewModel.CantidadEnvios</p>
+    </article>
+</section>
 
 <section>
     <article>
@@ -21,7 +27,7 @@
             </thead>
 
             <tbody>
-            @foreach (var pedido in Model)
+            @foreach (var pedido in Model.PedidoViewModels)
             {
                 <tr>
                     <td>@pedido.Id</td>
